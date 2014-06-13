@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+
+# Possible state values for status element
+STATUS_VALUE_INCOMPLETE = 'incomplete'
+STATUS_VALUE_DRAFT = 'draft'
+STATUS_VALUE_INTERIM = 'interim'
+STATUS_VALUE_ACCEPTED = 'accepted'
+STATUS_VALUE_DEPRECATED = 'deprecated'
+
+STATUS_VALUE_CHOICES = [
+    STATUS_VALUE_INCOMPLETE,
+    STATUS_VALUE_DRAFT,
+    STATUS_VALUE_INTERIM,
+    STATUS_VALUE_ACCEPTED,
+    STATUS_VALUE_DEPRECATED,
+]
