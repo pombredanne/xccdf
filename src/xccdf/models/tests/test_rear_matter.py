@@ -56,7 +56,7 @@ class RearMatterTestCase(unittest.TestCase):
 
         xccdf_rear_matter = self.create_rear_matter_object('ok')
 
-        self.assertEqual(xccdf_rear_matter.tag_name, 'rear-matter',
+        self.assertEqual(xccdf_rear_matter.name, 'rear-matter',
                          'RearMatter tag name does not match')
 
     def test_print_object(self):

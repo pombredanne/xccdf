@@ -59,7 +59,7 @@ class StatusTestCase(unittest.TestCase):
 
         xccdf_status = self.create_status_object('ok')
 
-        self.assertEqual(xccdf_status.tag_name, 'status',
+        self.assertEqual(xccdf_status.name, 'status',
                          'Status tag name does not match')
 
         self.assertIn(xccdf_status.text, STATUS_VALUE_CHOICES)

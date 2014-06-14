@@ -56,7 +56,7 @@ class DescriptionTestCase(unittest.TestCase):
 
         xccdf_description = self.create_description_object('ok')
 
-        self.assertEqual(xccdf_description.tag_name, 'description',
+        self.assertEqual(xccdf_description.name, 'description',
                          'Description tag name does not match')
 
     def test_print_object(self):

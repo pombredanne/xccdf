@@ -57,7 +57,7 @@ class NoticeTestCase(unittest.TestCase):
 
         xccdf_notice = self.create_notice_object('ok')
 
-        self.assertEqual(xccdf_notice.tag_name, 'notice',
+        self.assertEqual(xccdf_notice.name, 'notice',
                          'notice tag name does not match')
 
         self.assertTrue(hasattr(xccdf_notice, 'id'))

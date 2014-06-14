@@ -27,10 +27,14 @@ class Element(object):
             self.attrs = list()
 
     def __str__(self):
+        """
+        String representation of Element object
+        """
+
         string_value = ''
         if hasattr(self, 'namespace'):
             string_value += '<{namespace}>'.format(namespace=self.namespace)
-        string_value += '{tag}'.format(tag=self.tag_name)
+        string_value += '{tag}'.format(tag=self.name)
         return string_value
 
     def import_element(self, xml_element):

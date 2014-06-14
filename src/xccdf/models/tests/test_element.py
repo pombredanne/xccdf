@@ -132,7 +132,7 @@ class ElementTestCase(unittest.TestCase):
                          'Namespace does not match')
 
         self.assertEqual(element_dict['name'],
-                         xccdf_element.tag_name,
+                         xccdf_element.name,
                          'Tag name does not match')
 
         self.assertEqual(element_dict['text'],

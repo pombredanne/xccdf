@@ -56,7 +56,7 @@ class FrontMatterTestCase(unittest.TestCase):
 
         xccdf_front_matter = self.create_front_matter_object('ok')
 
-        self.assertEqual(xccdf_front_matter.tag_name, 'front-matter',
+        self.assertEqual(xccdf_front_matter.name, 'front-matter',
                          'FrontMatter tag name does not match')
 
     def test_print_object(self):

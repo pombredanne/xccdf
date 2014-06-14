@@ -55,7 +55,7 @@ class TitleTestCase(unittest.TestCase):
 
         xccdf_title = self.create_title_object('ok')
 
-        self.assertEqual(xccdf_title.tag_name, 'title',
+        self.assertEqual(xccdf_title.name, 'title',
                          'Title tag name does not match')
 
     def test_print_object(self):

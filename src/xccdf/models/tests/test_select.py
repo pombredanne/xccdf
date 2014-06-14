@@ -57,7 +57,7 @@ class SelectTestCase(unittest.TestCase):
 
         xccdf_select = self.create_select_object('ok')
 
-        self.assertEqual(xccdf_select.tag_name, 'select',
+        self.assertEqual(xccdf_select.name, 'select',
                          'select tag name does not match')
 
         self.assertTrue(hasattr(xccdf_select, 'idref'))

@@ -57,7 +57,7 @@ class VersionTestCase(unittest.TestCase):
 
         xccdf_version = self.create_version_object('ok')
 
-        self.assertEqual(xccdf_version.tag_name, 'version',
+        self.assertEqual(xccdf_version.name, 'version',
                          'version tag name does not match')
 
         self.assertTrue(hasattr(xccdf_version, 'text'))

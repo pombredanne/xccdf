@@ -57,7 +57,7 @@ class PlatformTestCase(unittest.TestCase):
 
         xccdf_platform = self.create_platform_object('ok')
 
-        self.assertEqual(xccdf_platform.tag_name, 'platform',
+        self.assertEqual(xccdf_platform.name, 'platform',
                          'platform tag name does not match')
 
         self.assertTrue(hasattr(xccdf_platform, 'idref'))
