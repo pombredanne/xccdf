@@ -10,11 +10,32 @@ class Element(object):
     Generic class to implement a XCCDF element
     """
 
-    def __init__(self, xml_element):
+    def __init__(self, xml_element=None, tag_name=None):
         """
         Initializes the attrs attribute to serialize the attributes
 
         :param xml.etree.ElementTree xml_element: XML element to load_xml_attrs
+        """
+
+        if xml_element is None and tag_name is None:
+            raise ValueError('either xml_element or tag_name are required')
+
+        if xml_element is not None:
+            self.import_element(xml_element)
+        else:
+            self.name = tag_name
+            self.attrs = list()
+
+    def __str__(self):
+        string_value = ''
+        if hasattr(self, 'namespace'):
+            string_value += '<{namespace}>'.format(namespace=self.namespace)
+        string_value += '{tag}'.format(tag=self.tag_name)
+        return string_value
+
+    def import_element(self, xml_element):
+        """
+        Imports the element from an ElementTree element and loads its content
         """
 
         if not isinstance(xml_element, ElementTree.Element):
@@ -32,10 +53,6 @@ class Element(object):
 
         self.text = self.xml_element.text
 
-    def __str__(self):
-        return '<{namespace}>{tag}'.format(namespace=self.namespace,
-                                           tag=self.tag_name)
-
     def as_dict(self):
         """
         Serializes the object necessary data in a dictionary
@@ -45,9 +62,12 @@ class Element(object):
         """
 
         element_dict = dict()
-        element_dict['namespace'] = self.namespace
-        element_dict['name'] = self.tag_name
-        element_dict['text'] = self.text
+        if hasattr(self, 'namespace'):
+            element_dict['namespace'] = self.namespace
+        if hasattr(self, 'name'):
+            element_dict['name'] = self.name
+        if hasattr(self, 'text'):
+            element_dict['text'] = self.text
 
         attr_dict = dict()
         for attr in self.attrs:
@@ -62,16 +82,17 @@ class Element(object):
         Load XML attributes as object attributes
         """
 
-        xml_attrs = self.xml_element.attrib
+        attrs_list = list()
 
-        attrs_list = []
+        if hasattr(self, 'xml_element'):
+            xml_attrs = self.xml_element.attrib
 
-        for variable, value in iter(xml_attrs.items()):
-            uri, tag = Element.get_namespace_and_tag(variable)
-            attrs_list.append(tag)
-            setattr(self, tag, value)
+            for variable, value in iter(xml_attrs.items()):
+                uri, tag = Element.get_namespace_and_tag(variable)
+                attrs_list.append(tag)
+                setattr(self, tag, value)
 
-        self.attrs = attrs_list
+            self.attrs = attrs_list
 
     @staticmethod
     def get_namespace_and_tag(name):
