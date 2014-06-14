@@ -114,6 +114,24 @@ class ElementTestCase(unittest.TestCase):
         self.assertEqual(str(xccdf_element), string_element,
                          'String representation does not match')
 
+    def test_mehtod_import_element_empty_xml_element(self):
+        """
+        Tests the import_element method with an empty xml_element
+        """
+
+        tag_name = 'element'
+
+        xccdf_element = Element(tag_name=tag_name)
+
+        self.assertEqual(xccdf_element.name, tag_name,
+                         'Tag name does not match')
+
+        error_msg = 'xml_element must be an instance of '\
+                    'xml.etree.ElementTree.Element'
+        with self.assertRaisesRegex(TypeError,
+                                    error_msg):
+            xccdf_element.import_element(None)
+
     def test_method_as_dict(self):
         """
         Tests the as_dict method
