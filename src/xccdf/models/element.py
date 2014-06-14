@@ -47,7 +47,7 @@ class Element(object):
 
         uri, tag = Element.get_namespace_and_tag(self.xml_element.tag)
         self.namespace = uri
-        self.tag_name = tag
+        self.name = tag
 
         self.load_xml_attrs()
 

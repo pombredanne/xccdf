@@ -38,9 +38,9 @@ class ElementTestCase(unittest.TestCase):
             if tag == 'Group':
                 return element
 
-    def test_init_all_ok(self):
+    def test_init_all_ok_with_element(self):
         """
-        Tests the class constructor
+        Tests the class constructor with an xml_element
         """
         xml_element = self.load_example_element()
 
@@ -50,7 +50,7 @@ class ElementTestCase(unittest.TestCase):
 
         self.assertEqual(xccdf_element.namespace, uri,
                          'Namespace does not match')
-        self.assertEqual(xccdf_element.tag_name, tag,
+        self.assertEqual(xccdf_element.name, tag,
                          'Tag name does not match')
 
         # Attributes asserting
@@ -59,19 +59,31 @@ class ElementTestCase(unittest.TestCase):
                              '{attr} attribute value does not match'.format(
                                  attr=attr))
 
-    def test_init_non_element(self):
+    def test_init_all_ok_with_tag_name(self):
+        """
+        Tests the class constructor with a tag_name
+        """
+
+        tag_name = 'element'
+
+        xccdf_element = Element(tag_name=tag_name)
+
+        self.assertEqual(xccdf_element.name, tag_name,
+                         'Tag name does not match')
+
+    def test_init_empty(self):
         """
         Tests the class constructor passing a different element
         rather than a XML element
         """
 
         xml_element = None
+        tag_name = None
 
-        error_msg = 'xml_element must be an instance of '\
-                    'xml.etree.ElementTree.Element'
-        with self.assertRaisesRegex(TypeError,
+        error_msg = 'either xml_element or tag_name are required'
+        with self.assertRaisesRegex(ValueError,
                                     error_msg):
-            Element(xml_element)
+            Element(xml_element, tag_name)
 
     def test_print_object(self):
         """
@@ -85,6 +97,19 @@ class ElementTestCase(unittest.TestCase):
         uri, tag = Element.get_namespace_and_tag(xml_element.tag)
 
         string_element = '<{namespace}>{tag}'.format(namespace=uri, tag=tag)
+
+        self.assertEqual(str(xccdf_element), string_element,
+                         'String representation does not match')
+
+    def test_print_object_only_tag(self):
+        """
+        Tests the string representation of an Element object
+        """
+
+        tag_name = 'element'
+        xccdf_element = Element(tag_name=tag_name)
+
+        string_element = '{tag}'.format(tag=tag_name)
 
         self.assertEqual(str(xccdf_element), string_element,
                          'String representation does not match')
