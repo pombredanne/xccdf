@@ -72,6 +72,31 @@ class VersionTestCase(unittest.TestCase):
                                     error_msg):
             self.create_version_object('no_content')
 
+    def test_init_no_xml_element(self):
+        """
+        Tests the class constructor from an empty instance
+        """
+        version = '1.0.0'
+        xccdf_version = Version(version=version)
+
+        self.assertEqual(xccdf_version.name, 'version',
+                         'version tag name does not match')
+
+        self.assertEqual(xccdf_version.text, version,
+                         'version does not match')
+
+        self.assertFalse(hasattr(xccdf_version, 'xml_element'))
+
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        error_msg = 'either xml_element or version are required'
+        with self.assertRaisesRegex(ValueError,
+                                    error_msg):
+            Version()
+
     def test_print_object(self):
         """
         Tests the string representation of an Version object
@@ -79,7 +104,20 @@ class VersionTestCase(unittest.TestCase):
 
         xccdf_version = self.create_version_object('ok')
 
-        string_value = '{version}'.format(version=xccdf_version.text)
+        string_value = 'version {version}'.format(version=xccdf_version.text)
+        self.assertEqual(str(xccdf_version), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Version object
+        from an empty instance
+        """
+
+        version = '1.0.0'
+        xccdf_version = Version(version=version)
+
+        string_value = 'version {version}'.format(version=version)
         self.assertEqual(str(xccdf_version), string_value,
                          'String representation does not match')
 
