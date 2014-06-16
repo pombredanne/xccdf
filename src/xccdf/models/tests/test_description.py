@@ -15,7 +15,7 @@ from xccdf.models.description import Description
 class DescriptionTestCase(unittest.TestCase):
 
     """
-    Test cases for Title class
+    Test cases for Description class
     """
 
     def load_example_element(self, xml_file_type='ok'):

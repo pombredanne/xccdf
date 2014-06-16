@@ -9,6 +9,7 @@ from xccdf.models.tests import test_rear_matter
 from xccdf.models.tests import test_platform
 from xccdf.models.tests import test_version
 from xccdf.models.tests import test_select
+from xccdf.models.tests import test_profile
 
 
 def suite():
@@ -25,6 +26,7 @@ def suite():
     suite.addTests(test_platform.suite())
     suite.addTests(test_version.suite())
     suite.addTests(test_select.suite())
+    suite.addTests(test_profile.suite())
     return suite
 
 if __name__ == '__main__':

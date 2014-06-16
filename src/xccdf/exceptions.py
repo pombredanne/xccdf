@@ -53,3 +53,32 @@ class RequiredAttributeException(Exception):
         """
 
         return self.value
+
+
+class CardinalityException(Exception):
+
+    """
+    This exception is raised when a children doesn't comply
+    to the parent cardinality rules
+
+    :param str value: Exception message
+    """
+
+    #: Default message value
+    value = 'This element is invalid based on '\
+            'the cardinality rules of the parent'
+
+    def __init__(self, value=None):
+
+        if value is not None:
+            self.value = value
+
+    def __str__(self):
+        """
+        String representation of the exception
+
+        :returns: Exception message as string
+        :rtype: str
+        """
+
+        return self.value

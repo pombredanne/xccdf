@@ -15,7 +15,7 @@ class Platform(Element):
         """
         Initializes the attrs attribute to serialize the attributes
 
-        :param xml.etree.ElementTree xml_element: XML element to load_xml_attrs
+        :param lxml.etree._Element xml_element: XML element to load
         """
         if xml_element is None and idref is None:
             raise ValueError('either xml_element or idref are required')

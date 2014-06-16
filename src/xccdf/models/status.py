@@ -19,7 +19,7 @@ class Status(Element):
         """
         Initializes the attrs attribute to serialize the attributes
 
-        :param xml.etree.ElementTree xml_element: XML element to load_xml_attrs
+        :param lxml.etree._Element xml_element: XML element to load_xml_attrs
         """
 
         if xml_element is None and state is None:
