@@ -171,6 +171,46 @@ class HTMLElementTestCase(unittest.TestCase):
                          '',
                          'HTML content from empty instance is not empty')
 
+    def test_method_convert_html_to_xml(self):
+        """
+        Tests the convert_html_to_xml method
+        """
+
+        xccdf_html_element = self.create_html_object('ok')
+
+        xml_content = xccdf_html_element.convert_html_to_xml()
+
+        test_xml_content = re.sub(r'<(?!/)', '<xhtml:',
+                                  xccdf_html_element.content)
+
+        self.assertEqual(xml_content, test_xml_content,
+                         'Converted xml content does not match')
+
+    def test_method_convert_html_to_xml_empty_instance(self):
+        """
+        Tests the convert_html_to_xml method in an empty instance
+        """
+
+        tag_name = 'html-element'
+        xccdf_html_element = HTMLElement(tag_name=tag_name)
+
+        self.assertEqual(xccdf_html_element.convert_html_to_xml(),
+                         '',
+                         'XML content from empty instance is not empty')
+
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_html_element = self.create_html_object('ok')
+
+        xccdf_html_element.update_xml_element()
+
+        self.assertEqual(xccdf_html_element.xml_element.text,
+                         xccdf_html_element.convert_html_to_xml(),
+                         'Updated XML element text does not match')
+
 
 def suite():
     loader = unittest.TestLoader()

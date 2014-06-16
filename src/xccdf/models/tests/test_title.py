@@ -105,6 +105,44 @@ class TitleTestCase(unittest.TestCase):
         self.assertEqual(str(xccdf_title), string_value,
                          'String representation does not match')
 
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_title = self.create_title_object('ok')
+
+        new_text = 'Test text'
+
+        self.assertNotEqual(xccdf_title.text, new_text,
+                            'New text is equal to original')
+
+        xccdf_title.text = new_text
+        xccdf_title.update_xml_element()
+
+        self.assertEqual(xccdf_title.xml_element.text, new_text,
+                         'XML text does not match new text')
+        self.assertEqual(xccdf_title.text, new_text,
+                         'Title text does not match new text')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_title = self.create_title_object('ok')
+
+        xml_content = xccdf_title.to_xml_string()
+
+        new_xccdf_title = Title(etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_title.text, new_xccdf_title.text,
+                         'Title text does not match')
+        self.assertEqual(xccdf_title.lang, new_xccdf_title.lang,
+                         'Title lang does not match')
+        self.assertEqual(xccdf_title.override, new_xccdf_title.override,
+                         'Title override does not match')
+
 
 def suite():
     loader = unittest.TestLoader()

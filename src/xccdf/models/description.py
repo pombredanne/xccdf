@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# lxml
+from lxml import etree
+
 # XCCDF
 from xccdf.models.html_element import HTMLElement
 
@@ -32,3 +35,22 @@ class Description(HTMLElement):
         if hasattr(self, 'lang'):
             string_value += ' ({lang})'.format(lang=self.lang)
         return string_value
+
+    def update_xml_element(self):
+        """
+        Updates the xml element contents to matches the instance contents
+        """
+
+        super().update_xml_element()
+
+        if hasattr(self, 'lang'):
+            self.xml_element.set(
+                '{http://www.w3.org/XML/1998/namespace}lang', self.lang)
+        if hasattr(self, 'override'):
+            self.xml_element.set('override', str(self.override))
+
+    def to_xml_string(self):
+        self.update_xml_element()
+        xml = self.xml_element
+
+        return etree.tostring(xml, pretty_print=True).decode('utf-8')

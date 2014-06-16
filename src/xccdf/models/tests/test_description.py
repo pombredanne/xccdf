@@ -108,6 +108,46 @@ class DescriptionTestCase(unittest.TestCase):
         self.assertEqual(str(xccdf_description), string_value,
                          'String representation does not match')
 
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_description = self.create_description_object('ok')
+
+        new_content = 'Test content'
+
+        self.assertNotEqual(xccdf_description.content, new_content,
+                            'New content is equal to original')
+
+        xccdf_description.content = new_content
+        xccdf_description.update_xml_element()
+
+        self.assertEqual(xccdf_description.xml_element.text, new_content,
+                         'XML content does not match new content')
+        self.assertEqual(xccdf_description.content, new_content,
+                         'Description content does not match new content')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_description = self.create_description_object('ok')
+
+        xml_content = xccdf_description.to_xml_string()
+
+        new_xccdf_description = Description(
+            etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_description.text, new_xccdf_description.text,
+                         'Title text does not match')
+        self.assertEqual(xccdf_description.lang, new_xccdf_description.lang,
+                         'Title lang does not match')
+        self.assertEqual(xccdf_description.override,
+                         new_xccdf_description.override,
+                         'Title override does not match')
+
 
 def suite():
     loader = unittest.TestLoader()
