@@ -41,6 +41,7 @@ setup(
 
     # Dependencies
     install_requires=[
+        'lxml>=3.3.5',
     ],
 
     # Tests

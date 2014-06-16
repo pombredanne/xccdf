@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Python stdlib
-from xml.etree import ElementTree
-
 
 class Element(object):
 
@@ -39,13 +36,8 @@ class Element(object):
 
     def import_element(self, xml_element):
         """
-        Imports the element from an ElementTree element and loads its content
+        Imports the element from an lxml element and loads its content
         """
-
-        if not isinstance(xml_element, ElementTree.Element):
-            error_msg = 'xml_element must be an instance of '\
-                        'xml.etree.ElementTree.Element'
-            raise TypeError(error_msg)
 
         self.xml_element = xml_element
 
@@ -108,9 +100,13 @@ class Element(object):
         :rtype: tuple
         """
 
-        if name[0] == "{":
-            uri, ignore, tag = name[1:].partition("}")
+        if isinstance(name, str):
+            if name[0] == "{":
+                uri, ignore, tag = name[1:].partition("}")
+            else:
+                uri = None
+                tag = name
         else:
             uri = None
-            tag = name
+            tag = None
         return uri, tag

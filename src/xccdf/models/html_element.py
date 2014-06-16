@@ -74,3 +74,15 @@ class HTMLElement(Element):
                                   re.sub(second_regex, '', full_xml_content))
 
         return html_content
+
+    def convert_html_to_xml(self):
+        """
+        Parses the HTML parsed texts and converts its tags to XML valid tags
+        """
+
+        if hasattr(self, 'content') and self.content != '':
+            regex = r'<(?!/)'
+            xml_content = re.sub(regex, '<xhtml:', self.content)
+            return xml_content
+        else:
+            return ''

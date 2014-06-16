@@ -4,8 +4,10 @@
 import unittest
 import os
 import io
-from xml.etree import ElementTree
 from datetime import date
+
+# lxml
+from lxml import etree
 
 # XCCDF
 from xccdf.models.status import Status
@@ -36,9 +38,9 @@ class StatusTestCase(unittest.TestCase):
         xml_string = xml_file.read()
         xml_file.close()
 
-        element_tree = ElementTree.fromstring(xml_string)
+        element_tree = etree.fromstring(xml_string.encode('utf-8'))
 
-        return element_tree[0]
+        return element_tree[1]
 
     def create_status_object(self, object_type='ok'):
         """
