@@ -14,7 +14,7 @@ from xccdf.models.html_element import HTMLElement
 class HTMLElementTestCase(unittest.TestCase):
 
     """
-    Test cases for Title class
+    Test cases for HTMLElement class
     """
 
     def load_example_element(self, xml_file_type='ok'):
@@ -38,34 +38,47 @@ class HTMLElementTestCase(unittest.TestCase):
 
         return element_tree[0]
 
-    def create_description_object(self, object_type='ok'):
+    def create_html_object(self, object_type='ok'):
         """
-        Helper method to create the Description object
+        Helper method to create the HTMLElement object
 
-        :returns: Description object
-        :rtype: xccdf.models.description.Description
+        :returns: HTMLElement object
+        :rtype: xccdf.models.description.HTMLElement
         """
 
         xml_element = self.load_example_element(object_type)
 
         return HTMLElement(xml_element)
 
-    def test_init_all_ok(self):
+    def test_init_with_xml_element(self):
         """
-        Tests the class constructor
+        Tests the class constructor with an xml element
         """
 
-        xccdf_html_element = self.create_description_object('ok')
+        xccdf_html_element = self.create_html_object('ok')
 
         self.assertNotEqual(xccdf_html_element.content, '', 'Content is empty')
         self.assertIsNotNone(xccdf_html_element.content, 'Content is empty')
+
+    def test_init_empty(self):
+        """
+        Tests the class constructor empty
+        """
+
+        tag_name = 'html-element'
+        xccdf_html_element = HTMLElement(tag_name=tag_name)
+
+        self.assertEqual(xccdf_html_element.name, tag_name,
+                         'Tag name does not match')
+        self.assertFalse(hasattr(xccdf_html_element, 'content'),
+                         'Content is defined in an empty instance')
 
     def test_method_as_dict(self):
         """
         Tests the as_dict method
         """
 
-        xccdf_html_element = self.create_description_object('ok')
+        xccdf_html_element = self.create_html_object('ok')
 
         element_dict = xccdf_html_element.as_dict()
 
@@ -73,12 +86,28 @@ class HTMLElementTestCase(unittest.TestCase):
                          xccdf_html_element.content,
                          'HTML content does not match')
 
+    def test_method_as_dict_empty(self):
+        """
+        Tests the as_dict method from an empty object
+        """
+
+        tag_name = 'html-element'
+        xccdf_html_element = HTMLElement(tag_name=tag_name)
+
+        element_dict = xccdf_html_element.as_dict()
+
+        self.assertEqual(element_dict.get('name', None),
+                         xccdf_html_element.name,
+                         'Name is not defined inside dictionary')
+        self.assertIsNone(element_dict.get('content', None),
+                          'Content is defined for an empty instance')
+
     def test_method_get_html_content(self):
         """
         Tests the get_html_content method
         """
 
-        xccdf_html_element = self.create_description_object('ok')
+        xccdf_html_element = self.create_html_object('ok')
 
         xml = xccdf_html_element.xml_element
         content_list = ["" if xml.text is None else xml.text]
@@ -105,7 +134,7 @@ class HTMLElementTestCase(unittest.TestCase):
         Tests the get_html_content method without HTML content
         """
 
-        xccdf_html_element = self.create_description_object('ok')
+        xccdf_html_element = self.create_html_object('ok')
 
         xml = xccdf_html_element.xml_element
         content_list = ["" if xml.text is None else xml.text]
@@ -126,6 +155,18 @@ class HTMLElementTestCase(unittest.TestCase):
 
         self.assertEqual(xccdf_html_element.content, html_content,
                          'Parsed plain content does not match')
+
+    def test_method_get_html_content_empty_instance(self):
+        """
+        Tests the get_html_content method in an empty instance
+        """
+
+        tag_name = 'html-element'
+        xccdf_html_element = HTMLElement(tag_name=tag_name)
+
+        self.assertEqual(xccdf_html_element.get_html_content(),
+                         '',
+                         'HTML content from empty instance is not empty')
 
 
 def suite():
