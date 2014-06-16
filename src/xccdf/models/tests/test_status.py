@@ -84,6 +84,29 @@ class StatusTestCase(unittest.TestCase):
 
         self.assertFalse(hasattr(xccdf_status, 'date'))
 
+    def test_init_no_xml_element(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_status = Status(state=STATUS_VALUE_CHOICES[0])
+
+        self.assertEqual(xccdf_status.name, 'status',
+                         'Status tag name does not match')
+
+        self.assertEqual(xccdf_status.text, STATUS_VALUE_CHOICES[0],
+                         'State does not match')
+
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        error_msg = 'either xml_element or state are required'
+        with self.assertRaisesRegex(ValueError,
+                                    error_msg):
+            Status()
+
     def test_print_object(self):
         """
         Tests the string representation of an Status object
@@ -91,8 +114,9 @@ class StatusTestCase(unittest.TestCase):
 
         xccdf_status = self.create_status_object('ok')
 
-        string_value = '{state} ({date})'.format(state=xccdf_status.text,
-                                                 date=xccdf_status.date)
+        string_value = 'status {state} ({date})'.format(
+            state=xccdf_status.text,
+            date=xccdf_status.date)
         self.assertEqual(str(xccdf_status), string_value,
                          'String representation does not match')
 
@@ -103,7 +127,19 @@ class StatusTestCase(unittest.TestCase):
 
         xccdf_status = self.create_status_object('no_date')
 
-        string_value = '{state}'.format(state=xccdf_status.text)
+        string_value = 'status {state}'.format(state=xccdf_status.text)
+        self.assertEqual(str(xccdf_status), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Status object
+        from an empty instance
+        """
+
+        xccdf_status = Status(state=STATUS_VALUE_CHOICES[0])
+
+        string_value = 'status {state}'.format(state=STATUS_VALUE_CHOICES[0])
         self.assertEqual(str(xccdf_status), string_value,
                          'String representation does not match')
 

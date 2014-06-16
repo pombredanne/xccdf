@@ -15,22 +15,32 @@ class Status(Element):
     Class to implement <xccdf:status> element
     """
 
-    def __init__(self, xml_element):
+    def __init__(self, xml_element=None, state=None):
         """
         Initializes the attrs attribute to serialize the attributes
 
         :param xml.etree.ElementTree xml_element: XML element to load_xml_attrs
         """
 
-        super().__init__(xml_element)
+        if xml_element is None and state is None:
+            raise ValueError('either xml_element or state are required')
+
+        self.text = state
+        tag_name = 'status' if xml_element is None else None
+        super().__init__(xml_element, tag_name)
 
         if self.text not in STATUS_VALUE_CHOICES:
-            val = '{val} is not valid. Must be one of this: {choices}'.format(
-                val=self.text, choices=repr(STATUS_VALUE_CHOICES))
+            val = '{val} is not valid. Must '\
+                  'be one of this: {choices}'.format(
+                      val=self.text, choices=repr(STATUS_VALUE_CHOICES))
             raise InvalidValueException(val)
 
     def __str__(self):
-        string_value = '{state}'.format(state=self.text)
+        """
+        String representation of Status object
+        """
+
+        string_value = 'status {state}'.format(state=self.text)
         if hasattr(self, 'date'):
             string_value += ' ({date})'.format(date=self.date)
         return string_value
