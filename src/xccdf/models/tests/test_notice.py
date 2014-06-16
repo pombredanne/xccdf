@@ -62,6 +62,29 @@ class NoticeTestCase(unittest.TestCase):
 
         self.assertTrue(hasattr(xccdf_notice, 'id'))
 
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        error_msg = 'either xml_element or id are required'
+        with self.assertRaisesRegex(ValueError,
+                                    error_msg):
+            Notice()
+
+    def test_init_no_xml_element(self):
+        """
+        Tests the class constructor without an xml_element
+        """
+
+        id = 'terms_of_use'
+        xccdf_notice = Notice(id=id)
+
+        self.assertEqual(xccdf_notice.name, 'notice',
+                         'notice tag name does not match')
+
+        self.assertEqual(xccdf_notice.id, id, 'notice id does not match')
+
     def test_init_no_id(self):
         """
         Tests the class constructor without an id
@@ -92,6 +115,19 @@ class NoticeTestCase(unittest.TestCase):
         xccdf_notice = self.create_notice_object('no_lang')
 
         string_value = 'notice {id}'.format(id=xccdf_notice.id)
+        self.assertEqual(str(xccdf_notice), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Notice object
+        from an empty instance
+        """
+
+        id = 'terms_of_use'
+        xccdf_notice = Notice(id=id)
+
+        string_value = 'notice {id}'.format(id=id)
         self.assertEqual(str(xccdf_notice), string_value,
                          'String representation does not match')
 
