@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# lxml
+from lxml import etree
+
 # XCCDF
 from xccdf.models.element import Element
 from xccdf.exceptions import RequiredAttributeException, InvalidValueException
@@ -59,3 +62,17 @@ class Select(Element):
             return True
         else:
             return False
+
+    def update_xml_element(self):
+        """
+        Updates the xml element contents to matches the instance contents
+        """
+
+        self.xml_element.set('idref', str(self.idref))
+        self.xml_element.set('selected', str(self.selected))
+
+    def to_xml_string(self):
+        self.update_xml_element()
+        xml = self.xml_element
+
+        return etree.tostring(xml, pretty_print=True).decode('utf-8')

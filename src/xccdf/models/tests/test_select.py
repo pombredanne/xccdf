@@ -173,6 +173,43 @@ class SelectTestCase(unittest.TestCase):
         self.assertFalse(xccdf_select.is_selected(),
                          'Expected False in selected')
 
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_select = self.create_select_object('ok')
+
+        new_idref = 'test_id_ref'
+
+        self.assertNotEqual(xccdf_select.idref, new_idref,
+                            'New idref is equal to original')
+
+        xccdf_select.idref = new_idref
+        xccdf_select.update_xml_element()
+
+        self.assertEqual(xccdf_select.xml_element.attrib['idref'], new_idref,
+                         'XML idref does not match new idref')
+        self.assertEqual(xccdf_select.idref, new_idref,
+                         'Title idref does not match new idref')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_select = self.create_select_object('ok')
+
+        xml_content = xccdf_select.to_xml_string()
+
+        new_xccdf_select = Select(
+            etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_select.idref, new_xccdf_select.idref,
+                         'Select idref does not match')
+        self.assertEqual(xccdf_select.selected, new_xccdf_select.selected,
+                         'Select selected does not match')
+
 
 def suite():
     loader = unittest.TestLoader()
