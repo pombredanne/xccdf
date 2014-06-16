@@ -11,14 +11,18 @@ class Platform(Element):
     Class to implement <xccdf:platform> element
     """
 
-    def __init__(self, xml_element):
+    def __init__(self, xml_element=None, idref=None):
         """
         Initializes the attrs attribute to serialize the attributes
 
         :param xml.etree.ElementTree xml_element: XML element to load_xml_attrs
         """
+        if xml_element is None and idref is None:
+            raise ValueError('either xml_element or idref are required')
 
-        super().__init__(xml_element)
+        tag_name = 'platform' if xml_element is None else None
+        self.idref = idref
+        super().__init__(xml_element, tag_name)
 
         if (not hasattr(self, 'idref')
                 or self.idref == ''
@@ -26,5 +30,9 @@ class Platform(Element):
             raise RequiredAttributeException('idref attribute required')
 
     def __str__(self):
-        string_value = '{idref}'.format(idref=self.idref)
+        """
+        String representation of Notice object
+        """
+
+        string_value = 'platform {idref}'.format(idref=self.idref)
         return string_value

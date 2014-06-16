@@ -72,6 +72,28 @@ class PlatformTestCase(unittest.TestCase):
                                     error_msg):
             self.create_platform_object('no_idref')
 
+    def test_init_no_xml_element(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_platform = Platform(idref='cpe:/o:redhat:enterprise_linux:5')
+
+        self.assertEqual(xccdf_platform.name, 'platform',
+                         'platform tag name does not match')
+
+        self.assertTrue(hasattr(xccdf_platform, 'idref'))
+
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        error_msg = 'either xml_element or idref are required'
+        with self.assertRaisesRegex(ValueError,
+                                    error_msg):
+            Platform()
+
     def test_print_object(self):
         """
         Tests the string representation of an Platform object
@@ -79,7 +101,7 @@ class PlatformTestCase(unittest.TestCase):
 
         xccdf_platform = self.create_platform_object('ok')
 
-        string_value = '{idref}'.format(idref=xccdf_platform.idref)
+        string_value = 'platform {idref}'.format(idref=xccdf_platform.idref)
         self.assertEqual(str(xccdf_platform), string_value,
                          'String representation does not match')
 
