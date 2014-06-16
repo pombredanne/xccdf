@@ -59,6 +59,16 @@ class RearMatterTestCase(unittest.TestCase):
         self.assertEqual(xccdf_rear_matter.name, 'rear-matter',
                          'RearMatter tag name does not match')
 
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_rear_matter = RearMatter()
+
+        self.assertEqual(xccdf_rear_matter.name, 'rear-matter',
+                         'RearMatter tag name does not match')
+
     def test_print_object(self):
         """
         Tests the string representation of an RearMatter object
@@ -66,8 +76,8 @@ class RearMatterTestCase(unittest.TestCase):
 
         xccdf_rear_matter = self.create_rear_matter_object('ok')
 
-        string_value = '{ftmatter} ({lang})'.format(
-            ftmatter=xccdf_rear_matter.content,
+        string_value = 'rear-matter {rrmatter} ({lang})'.format(
+            rrmatter=xccdf_rear_matter.content,
             lang=xccdf_rear_matter.lang)
         self.assertEqual(str(xccdf_rear_matter), string_value,
                          'String representation does not match')
@@ -79,7 +89,19 @@ class RearMatterTestCase(unittest.TestCase):
 
         xccdf_rear_matter = self.create_rear_matter_object('no_lang')
 
-        string_value = '{ftmatter}'.format(ftmatter=xccdf_rear_matter.content)
+        string_value = 'rear-matter {rrmatter}'.format(
+            rrmatter=xccdf_rear_matter.content)
+        self.assertEqual(str(xccdf_rear_matter), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an RearMatter object
+        """
+
+        xccdf_rear_matter = RearMatter()
+
+        string_value = 'rear-matter'
         self.assertEqual(str(xccdf_rear_matter), string_value,
                          'String representation does not match')
 
