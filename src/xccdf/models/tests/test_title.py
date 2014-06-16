@@ -48,12 +48,22 @@ class TitleTestCase(unittest.TestCase):
 
         return Title(xml_element)
 
-    def test_init_all_ok(self):
+    def test_init_all_with_xml_element(self):
         """
-        Tests the class constructor
+        Tests the class constructor with a xml element
         """
 
         xccdf_title = self.create_title_object('ok')
+
+        self.assertEqual(xccdf_title.name, 'title',
+                         'Title tag name does not match')
+
+    def test_init_all_with_empty_instace(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_title = Title()
 
         self.assertEqual(xccdf_title.name, 'title',
                          'Title tag name does not match')
@@ -65,8 +75,20 @@ class TitleTestCase(unittest.TestCase):
 
         xccdf_title = self.create_title_object('ok')
 
-        string_value = '{title} ({lang})'.format(title=xccdf_title.text,
-                                                 lang=xccdf_title.lang)
+        string_value = 'title {title} ({lang})'.format(title=xccdf_title.text,
+                                                       lang=xccdf_title.lang)
+        self.assertEqual(str(xccdf_title), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Title object
+        from an empty instance
+        """
+
+        xccdf_title = Title()
+
+        string_value = 'title'
         self.assertEqual(str(xccdf_title), string_value,
                          'String representation does not match')
 
@@ -77,7 +99,7 @@ class TitleTestCase(unittest.TestCase):
 
         xccdf_title = self.create_title_object('no_lang')
 
-        string_value = '{title}'.format(title=xccdf_title.text)
+        string_value = 'title {title}'.format(title=xccdf_title.text)
         self.assertEqual(str(xccdf_title), string_value,
                          'String representation does not match')
 
