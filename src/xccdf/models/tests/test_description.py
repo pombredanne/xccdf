@@ -49,12 +49,22 @@ class DescriptionTestCase(unittest.TestCase):
 
         return Description(xml_element)
 
-    def test_init_all_ok(self):
+    def test_init_with_xml_element(self):
         """
-        Tests the class constructor
+        Tests the class constructor with a xml element
         """
 
         xccdf_description = self.create_description_object('ok')
+
+        self.assertEqual(xccdf_description.name, 'description',
+                         'Description tag name does not match')
+
+    def test_init_with_emtpy_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_description = Description()
 
         self.assertEqual(xccdf_description.name, 'description',
                          'Description tag name does not match')
@@ -66,8 +76,21 @@ class DescriptionTestCase(unittest.TestCase):
 
         xccdf_description = self.create_description_object('ok')
 
-        string_value = '{desc} ({lang})'.format(desc=xccdf_description.content,
-                                                lang=xccdf_description.lang)
+        string_value = 'description {desc} ({lang})'.format(
+            desc=xccdf_description.content,
+            lang=xccdf_description.lang)
+        self.assertEqual(str(xccdf_description), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Description object
+        from an empty instance
+        """
+
+        xccdf_description = Description()
+
+        string_value = 'description'
         self.assertEqual(str(xccdf_description), string_value,
                          'String representation does not match')
 
@@ -78,7 +101,8 @@ class DescriptionTestCase(unittest.TestCase):
 
         xccdf_description = self.create_description_object('no_lang')
 
-        string_value = '{desc}'.format(desc=xccdf_description.content)
+        string_value = 'description {desc}'.format(
+            desc=xccdf_description.content)
         self.assertEqual(str(xccdf_description), string_value,
                          'String representation does not match')
 
