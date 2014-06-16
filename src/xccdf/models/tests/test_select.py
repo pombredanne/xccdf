@@ -64,6 +64,48 @@ class SelectTestCase(unittest.TestCase):
 
         self.assertTrue(hasattr(xccdf_select, 'selected'))
 
+    def test_init_no_xml_element(self):
+        """
+        Tests the class constructor from an empty instance
+        """
+
+        idref = 'usgcb-rhel5desktop-rule-2.1.1.1.1.a'
+        xccdf_select = Select(idref=idref)
+
+        self.assertEqual(xccdf_select.name, 'select',
+                         'select tag name does not match')
+
+        self.assertEqual(xccdf_select.idref, idref,
+                         'select idref does not match')
+
+        self.assertFalse(xccdf_select.is_selected())
+
+    def test_init_with_empty_instance(self):
+        """
+        Tests the class constructor from an empty instance
+        """
+
+        error_msg = 'either xml_element or idref are required'
+        with self.assertRaisesRegex(ValueError,
+                                    error_msg):
+            Select()
+
+    def test_init_no_xml_element_selected(self):
+        """
+        Tests the class constructor from an empty instance with selected true
+        """
+
+        idref = 'usgcb-rhel5desktop-rule-2.1.1.1.1.a'
+        xccdf_select = Select(idref=idref, selected=True)
+
+        self.assertEqual(xccdf_select.name, 'select',
+                         'select tag name does not match')
+
+        self.assertEqual(xccdf_select.idref, idref,
+                         'select idref does not match')
+
+        self.assertTrue(xccdf_select.is_selected())
+
     def test_init_no_idref(self):
         """
         Tests the class constructor without an id
@@ -73,16 +115,6 @@ class SelectTestCase(unittest.TestCase):
         with self.assertRaisesRegex(RequiredAttributeException,
                                     error_msg):
             self.create_select_object('no_idref')
-
-    def test_init_no_selected(self):
-        """
-        Tests the class constructor without an id
-        """
-
-        error_msg = 'selected attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_select_object('no_selected')
 
     def test_init_invalid_selected(self):
         """
@@ -101,8 +133,21 @@ class SelectTestCase(unittest.TestCase):
 
         xccdf_select = self.create_select_object('ok')
 
-        string_value = '{idref} {sel}'.format(
+        string_value = 'select {idref} {sel}'.format(
             idref=xccdf_select.idref, sel=str(xccdf_select.is_selected()))
+        self.assertEqual(str(xccdf_select), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an Select object
+        from an empty instance
+        """
+
+        idref = 'usgcb-rhel5desktop-rule-2.1.1.1.1.a'
+        xccdf_select = Select(idref=idref)
+
+        string_value = 'select {idref} {sel}'.format(idref=idref, sel=False)
         self.assertEqual(str(xccdf_select), string_value,
                          'String representation does not match')
 
