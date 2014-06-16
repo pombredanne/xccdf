@@ -59,6 +59,16 @@ class FrontMatterTestCase(unittest.TestCase):
         self.assertEqual(xccdf_front_matter.name, 'front-matter',
                          'FrontMatter tag name does not match')
 
+    def test_init_empty_instance(self):
+        """
+        Tests the class constructor with an empty instance
+        """
+
+        xccdf_front_matter = FrontMatter()
+
+        self.assertEqual(xccdf_front_matter.name, 'front-matter',
+                         'FrontMatter tag name does not match')
+
     def test_print_object(self):
         """
         Tests the string representation of an FrontMatter object
@@ -66,7 +76,7 @@ class FrontMatterTestCase(unittest.TestCase):
 
         xccdf_front_matter = self.create_front_matter_object('ok')
 
-        string_value = '{ftmatter} ({lang})'.format(
+        string_value = 'front-matter {ftmatter} ({lang})'.format(
             ftmatter=xccdf_front_matter.content,
             lang=xccdf_front_matter.lang)
         self.assertEqual(str(xccdf_front_matter), string_value,
@@ -79,7 +89,20 @@ class FrontMatterTestCase(unittest.TestCase):
 
         xccdf_front_matter = self.create_front_matter_object('no_lang')
 
-        string_value = '{ftmatter}'.format(ftmatter=xccdf_front_matter.content)
+        string_value = 'front-matter {ftmatter}'.format(
+            ftmatter=xccdf_front_matter.content)
+        self.assertEqual(str(xccdf_front_matter), string_value,
+                         'String representation does not match')
+
+    def test_print_object_empty_instance(self):
+        """
+        Tests the string representation of an FrontMatter object
+        from an empty instance
+        """
+
+        xccdf_front_matter = FrontMatter()
+
+        string_value = 'front-matter'
         self.assertEqual(str(xccdf_front_matter), string_value,
                          'String representation does not match')
 
