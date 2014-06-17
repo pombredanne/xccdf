@@ -9,7 +9,7 @@ import io
 from lxml import etree
 
 # XCCDF
-from xccdf.models.version import Version
+from xccdf.models.version import Version, TailoringVersion
 from xccdf.exceptions import RequiredAttributeException
 
 
@@ -51,6 +51,18 @@ class VersionTestCase(unittest.TestCase):
         xml_element = self.load_example_element(object_type)
 
         return Version(xml_element)
+
+    def create_tailoring_version_object(self, object_type='ok'):
+        """
+        Helper method to create the Version object
+
+        :returns: Version object
+        :rtype: xccdf.models.version.Version
+        """
+
+        xml_element = self.load_example_element(object_type)
+
+        return TailoringVersion(xml_element)
 
     def test_init_all_ok(self):
         """
@@ -122,6 +134,93 @@ class VersionTestCase(unittest.TestCase):
         string_value = 'version {version}'.format(version=version)
         self.assertEqual(str(xccdf_version), string_value,
                          'String representation does not match')
+
+    def test_method_time_to_str(self):
+        """
+        Tests the time_to_str method
+        """
+
+        xccdf_version = self.create_version_object('ok')
+
+        self.assertEqual(xccdf_version.time_to_str(),
+                         xccdf_version.xml_element.attrib['time'],
+                         'time_to_str timestamp string does not match')
+
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_version = self.create_version_object('ok')
+
+        new_text = '2.0.0.0'
+
+        self.assertNotEqual(xccdf_version.text, new_text,
+                            'New text is equal to original')
+
+        xccdf_version.text = new_text
+        xccdf_version.update_xml_element()
+
+        self.assertEqual(xccdf_version.xml_element.text, new_text,
+                         'XML text does not match new text')
+        self.assertEqual(xccdf_version.text, new_text,
+                         'Title text does not match new text')
+
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        version = '2.0.0.1'
+        xccdf_version = Version(version=version)
+
+        self.assertFalse(hasattr(xccdf_version, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_version.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_version, 'xml_element'),
+                        'XML element is not defined')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_version = self.create_version_object('ok')
+
+        xml_content = xccdf_version.to_xml_string()
+
+        new_xccdf_version = Version(
+            etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_version.text, new_xccdf_version.text,
+                         'Version text does not match')
+
+    def test_tailoring_version_init_all_ok(self):
+        """
+        Tests the class constructor of TailoringVersion
+        """
+
+        xccdf_version = self.create_tailoring_version_object('ok')
+
+        self.assertEqual(xccdf_version.name, 'version',
+                         'version tag name does not match')
+
+        self.assertEqual(xccdf_version.text, xccdf_version.xml_element.text,
+                         'version text does not match')
+
+        self.assertTrue(hasattr(xccdf_version, 'time'))
+
+    def test_tailoring_version_init_no_time(self):
+        """
+        Tests the class constructor of TailoringVersion without time attr
+        """
+
+        error_msg = 'time is required'
+        with self.assertRaisesRegex(RequiredAttributeException,
+                                    error_msg):
+            self.create_tailoring_version_object('no_time')
 
 
 def suite():

@@ -6,6 +6,7 @@ from lxml import etree
 # XCCDF
 from xccdf.models.element import Element
 from xccdf.exceptions import RequiredAttributeException, InvalidValueException
+from xccdf.constants import NSMAP
 
 
 class Select(Element):
@@ -67,6 +68,9 @@ class Select(Element):
         """
         Updates the xml element contents to matches the instance contents
         """
+
+        if not hasattr(self, 'xml_element'):
+            self.xml_element = etree.Element(self.name, nsmap=NSMAP)
 
         self.xml_element.set('idref', str(self.idref))
         self.xml_element.set('selected', str(self.selected))

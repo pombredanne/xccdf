@@ -125,6 +125,21 @@ class TitleTestCase(unittest.TestCase):
         self.assertEqual(xccdf_title.text, new_text,
                          'Title text does not match new text')
 
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_title = Title()
+
+        self.assertFalse(hasattr(xccdf_title, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_title.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_title, 'xml_element'),
+                        'XML element is not defined')
+
     def test_method_to_xml_string(self):
         """
         Tests the to_xml_string method

@@ -211,6 +211,22 @@ class HTMLElementTestCase(unittest.TestCase):
                          xccdf_html_element.convert_html_to_xml(),
                          'Updated XML element text does not match')
 
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method from an empty instance
+        """
+
+        tag_name = 'html-element'
+        xccdf_html_element = HTMLElement(tag_name=tag_name)
+
+        self.assertFalse(hasattr(xccdf_html_element, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_html_element.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_html_element, 'xml_element'),
+                        'XML element is not defined')
+
 
 def suite():
     loader = unittest.TestLoader()

@@ -5,7 +5,7 @@ import unittest
 import os
 import io
 
-# lxml 
+# lxml
 from lxml import etree
 
 # XCCDF
@@ -78,13 +78,14 @@ class PlatformTestCase(unittest.TestCase):
         """
         Tests the class constructor with an empty instance
         """
-
-        xccdf_platform = Platform(idref='cpe:/o:redhat:enterprise_linux:5')
+        idref = 'cpe:/o:redhat:enterprise_linux:5'
+        xccdf_platform = Platform(idref=idref)
 
         self.assertEqual(xccdf_platform.name, 'platform',
                          'platform tag name does not match')
 
-        self.assertTrue(hasattr(xccdf_platform, 'idref'))
+        self.assertEqual(xccdf_platform.idref, idref,
+                         'platform idref does not match')
 
     def test_init_empty_instance(self):
         """
@@ -106,6 +107,57 @@ class PlatformTestCase(unittest.TestCase):
         string_value = 'platform {idref}'.format(idref=xccdf_platform.idref)
         self.assertEqual(str(xccdf_platform), string_value,
                          'String representation does not match')
+
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_platform = self.create_platform_object('ok')
+
+        new_idref = 'cpe:test:test:test'
+
+        self.assertNotEqual(xccdf_platform.idref, new_idref,
+                            'New idref is equal to original')
+
+        xccdf_platform.idref = new_idref
+        xccdf_platform.update_xml_element()
+
+        self.assertEqual(xccdf_platform.xml_element.attrib['idref'], new_idref,
+                         'XML idref does not match new idref')
+        self.assertEqual(xccdf_platform.idref, new_idref,
+                         'Title idref does not match new idref')
+
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        idref = 'cpe:/o:redhat:enterprise_linux:5'
+        xccdf_platform = Platform(idref=idref)
+
+        self.assertFalse(hasattr(xccdf_platform, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_platform.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_platform, 'xml_element'),
+                        'XML element is not defined')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_platform = self.create_platform_object('ok')
+
+        xml_content = xccdf_platform.to_xml_string()
+
+        new_xccdf_platform = Platform(
+            etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_platform.idref, new_xccdf_platform.idref,
+                         'Platform idref does not match')
 
 
 def suite():

@@ -193,6 +193,22 @@ class SelectTestCase(unittest.TestCase):
         self.assertEqual(xccdf_select.idref, new_idref,
                          'Title idref does not match new idref')
 
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method with an empty instance
+        """
+
+        idref = 'usgcb-rhel5desktop-rule-2.1.1.1.1.a'
+        xccdf_select = Select(idref=idref)
+
+        self.assertFalse(hasattr(xccdf_select, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_select.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_select, 'xml_element'),
+                        'XML element is not defined')
+
     def test_method_to_xml_string(self):
         """
         Tests the to_xml_string method

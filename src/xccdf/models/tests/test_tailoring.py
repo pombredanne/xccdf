@@ -9,9 +9,10 @@ import io
 from lxml import etree
 
 # XCCDF
-from xccdf.models.profile import Profile
+from xccdf.models.tailoring import Tailoring
 from xccdf.exceptions import RequiredAttributeException
 from xccdf.exceptions import CardinalityException
+from xccdf.exceptions import InvalidValueException
 
 
 class ProfileTestCase(unittest.TestCase):
@@ -25,7 +26,7 @@ class ProfileTestCase(unittest.TestCase):
         Helper method to load an XML element
         """
 
-        file_name = 'example_xccdf_profile_{type}.xml'.format(
+        file_name = 'example_xccdf_tailoring_{type}.xml'.format(
             type=xml_file_type)
 
         xml_path = os.path.abspath(os.path.dirname(__file__))
@@ -41,7 +42,7 @@ class ProfileTestCase(unittest.TestCase):
 
         return element_tree[1]
 
-    def create_profile_object(self, object_type='ok'):
+    def create_tailoring_element(self, object_type='ok'):
         """
         Helper method to create the Profile object
 
@@ -51,19 +52,19 @@ class ProfileTestCase(unittest.TestCase):
 
         xml_element = self.load_example_element(object_type)
 
-        return Profile(xml_element)
+        return Tailoring(xml_element)
 
     def test_init_with_xml_element(self):
         """
         Tests the class constructor with a xml element
         """
 
-        xccdf_profile = self.create_profile_object('ok')
+        xccdf_tailoring = self.create_tailoring_element('ok')
 
-        self.assertEqual(xccdf_profile.name, 'Profile',
-                         'Profile tag name does not match')
-        self.assertTrue(hasattr(xccdf_profile, 'id'),
-                        'Profile ID must be defined')
+        self.assertEqual(xccdf_tailoring.name, 'Tailoring',
+                         'Tailoring tag name does not match')
+        self.assertTrue(hasattr(xccdf_tailoring, 'id'),
+                        'Tailoring ID must be defined')
 
     def test_init_no_id(self):
         """
@@ -73,7 +74,17 @@ class ProfileTestCase(unittest.TestCase):
         error_msg = 'id attribute required'
         with self.assertRaisesRegex(RequiredAttributeException,
                                     error_msg):
-            self.create_profile_object('no_id')
+            self.create_tailoring_element('no_id')
+
+    def test_init_invalid_id(self):
+        """
+        Tests the class constructor with a xml element
+        """
+
+        error_msg = 'id invalid format'
+        with self.assertRaisesRegex(InvalidValueException,
+                                    error_msg):
+            self.create_tailoring_element('invalid_id')
 
     def test_init_with_empty_instance(self):
         """
@@ -83,22 +94,22 @@ class ProfileTestCase(unittest.TestCase):
         error_msg = 'either xml_element or id are required'
         with self.assertRaisesRegex(ValueError,
                                     error_msg):
-            Profile()
+            Tailoring()
 
     def test_init_no_xml_element(self):
         """
         Tests the class constructor with no xml_element
         """
 
-        id = 'united_states_government_configuration_baseline'
-        xccdf_profile = Profile(id=id)
+        id = 'xccdf_test_tailoring_test'
+        xccdf_tailoring = Tailoring(id=id)
 
-        self.assertEqual(xccdf_profile.name, 'Profile',
-                         'Profile tag name does not match')
-        self.assertEqual(xccdf_profile.id, id,
-                         'Profile id does not match')
-        self.assertEqual(xccdf_profile.children, list(),
-                         'Profile children list must be empty')
+        self.assertEqual(xccdf_tailoring.name, 'Tailoring',
+                         'Tailoring tag name does not match')
+        self.assertEqual(xccdf_tailoring.id, id,
+                         'Tailoring id does not match')
+        self.assertEqual(xccdf_tailoring.children, list(),
+                         'Tailoring children list must be empty')
 
     def test_init_duplicated_version(self):
         """
@@ -108,42 +119,52 @@ class ProfileTestCase(unittest.TestCase):
         error_msg = 'version element found more than once'
         with self.assertRaisesRegex(CardinalityException,
                                     error_msg):
-            self.create_profile_object('duplicated_version')
+            self.create_tailoring_element('duplicated_version')
+
+    def test_init_no_version(self):
+        """
+        Tests the class constructor with no version
+        """
+
+        error_msg = 'version element is required'
+        with self.assertRaisesRegex(CardinalityException,
+                                    error_msg):
+            self.create_tailoring_element('no_version')
 
     def test_init_no_title(self):
         """
         Tests the class constructor with no title
         """
 
-        error_msg = 'title element is required at least once'
+        error_msg = 'Profile element is required at least once'
         with self.assertRaisesRegex(CardinalityException,
                                     error_msg):
-            self.create_profile_object('no_title')
+            self.create_tailoring_element('no_profile')
 
     def test_print_object(self):
         """
-        Tests the string representation of an Profile object
+        Tests the string representation of an Tailoring object
         """
 
-        xccdf_profile = self.create_profile_object('ok')
+        xccdf_tailoring = self.create_tailoring_element('ok')
 
-        string_value = 'Profile {id}'.format(
-            id=xccdf_profile.id)
-        self.assertEqual(str(xccdf_profile), string_value,
+        string_value = 'Tailoring {id}'.format(
+            id=xccdf_tailoring.id)
+        self.assertEqual(str(xccdf_tailoring), string_value,
                          'String representation does not match')
 
     def test_print_object_empty_instance(self):
         """
-        Tests the string representation of an Profile object
+        Tests the string representation of an Tailoring object
         from an empty instance
         """
 
-        id = 'united_states_government_configuration_baseline'
-        xccdf_profile = Profile(id=id)
+        id = 'xccdf_test_tailoring_test'
+        xccdf_tailoring = Tailoring(id=id)
 
-        string_value = 'Profile {id}'.format(
+        string_value = 'Tailoring {id}'.format(
             id=id)
-        self.assertEqual(str(xccdf_profile), string_value,
+        self.assertEqual(str(xccdf_tailoring), string_value,
                          'String representation does not match')
 
     def test_method_update_xml_element(self):
@@ -151,19 +172,19 @@ class ProfileTestCase(unittest.TestCase):
         Tests the update_xml_element method
         """
 
-        xccdf_profile = self.create_profile_object('ok')
+        xccdf_tailoring = self.create_tailoring_element('ok')
 
         new_id = 'new_profile_id_test'
 
-        self.assertNotEqual(xccdf_profile.id, new_id,
+        self.assertNotEqual(xccdf_tailoring.id, new_id,
                             'New id is equal to original')
 
-        xccdf_profile.id = new_id
-        xccdf_profile.update_xml_element()
+        xccdf_tailoring.id = new_id
+        xccdf_tailoring.update_xml_element()
 
-        self.assertEqual(xccdf_profile.xml_element.attrib['id'], new_id,
+        self.assertEqual(xccdf_tailoring.xml_element.attrib['id'], new_id,
                          'XML id does not match new id')
-        self.assertEqual(xccdf_profile.id, new_id,
+        self.assertEqual(xccdf_tailoring.id, new_id,
                          'Title id does not match new id')
 
     def test_method_update_xml_element_empty_instance(self):
@@ -171,8 +192,8 @@ class ProfileTestCase(unittest.TestCase):
         Tests the update_xml_element method with an empty instance
         """
 
-        id = 'united_states_government_configuration_baseline'
-        xccdf_profile = Profile(id=id)
+        id = 'xccdf_test_tailoring_test'
+        xccdf_profile = Tailoring(id=id)
 
         self.assertFalse(hasattr(xccdf_profile, 'xml_element'),
                          'XML element is defined')

@@ -5,6 +5,7 @@ from lxml import etree
 
 # XCCDF
 from xccdf.models.element import Element
+from xccdf.constants import NSMAP
 
 
 class Title(Element):
@@ -39,14 +40,25 @@ class Title(Element):
         Updates the xml element contents to matches the instance contents
         """
 
+        if not hasattr(self, 'xml_element'):
+            self.xml_element = etree.Element(self.name, nsmap=NSMAP)
+
         if hasattr(self, 'lang'):
             self.xml_element.set(
                 '{http://www.w3.org/XML/1998/namespace}lang', self.lang)
         if hasattr(self, 'override'):
             self.xml_element.set('override', str(self.override))
-        self.xml_element.text = self.text
+        if hasattr(self, 'text'):
+            self.xml_element.text = self.text
 
     def to_xml_string(self):
+        """
+        Exports the element in XML format
+
+        :returns: element in XML format
+        :rtype: str
+        """
+
         self.update_xml_element()
         xml = self.xml_element
 

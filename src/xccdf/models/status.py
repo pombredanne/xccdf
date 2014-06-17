@@ -3,10 +3,14 @@
 # Python stdlib
 from datetime import date
 
+# lxml
+from lxml import etree
+
 # XCCDF
 from xccdf.exceptions import InvalidValueException
 from xccdf.models.element import Element
 from xccdf.constants.status import STATUS_VALUE_CHOICES
+from xccdf.constants import NSMAP
 
 
 class Status(Element):
@@ -45,7 +49,7 @@ class Status(Element):
             string_value += ' ({date})'.format(date=self.date)
         return string_value
 
-    def get_date(self):
+    def str_to_date(self):
         """
         Returns the date attribute as a date object
 
@@ -57,3 +61,21 @@ class Status(Element):
             return date(*list(map(int, self.date.split('-'))))
         else:
             return None
+
+    def update_xml_element(self):
+        """
+        Updates the xml element contents to matches the instance contents
+        """
+
+        if not hasattr(self, 'xml_element'):
+            self.xml_element = etree.Element(self.name, nsmap=NSMAP)
+
+        if hasattr(self, 'date'):
+            self.xml_element.set('date', self.date)
+        self.xml_element.text = self.text
+
+    def to_xml_string(self):
+        self.update_xml_element()
+        xml = self.xml_element
+
+        return etree.tostring(xml, pretty_print=True).decode('utf-8')

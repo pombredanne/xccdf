@@ -4,8 +4,12 @@
 from xml.etree import ElementTree
 import re
 
+# lxml
+from lxml import etree
+
 # XCCDF
 from xccdf.models.element import Element
+from xccdf.constants import NSMAP
 
 
 class HTMLElement(Element):
@@ -91,6 +95,9 @@ class HTMLElement(Element):
         """
         Updates the xml element contents to matches the instance contents
         """
+
+        if not hasattr(self, 'xml_element'):
+            self.xml_element = etree.Element(self.name, nsmap=NSMAP)
 
         for element in self.xml_element:
             self.xml_element.remove(element)

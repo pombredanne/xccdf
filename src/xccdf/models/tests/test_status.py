@@ -145,25 +145,75 @@ class StatusTestCase(unittest.TestCase):
         self.assertEqual(str(xccdf_status), string_value,
                          'String representation does not match')
 
-    def test_method_get_date(self):
+    def test_method_str_to_date(self):
         """
-        Tests the get_date method
+        Tests the str_to_date method
         """
 
         xccdf_status = self.create_status_object('ok')
 
-        self.assertIsInstance(xccdf_status.get_date(), date,
+        self.assertIsInstance(xccdf_status.str_to_date(), date,
                               'Returned date is not a date object')
 
-    def test_method_get_date_no_date(self):
+    def test_method_str_to_date_no_date(self):
         """
-        Tests the get_date method on a status without date
+        Tests the str_to_date method on a status without date
         """
 
         xccdf_status = self.create_status_object('no_date')
 
-        self.assertIsNone(xccdf_status.get_date(),
+        self.assertIsNone(xccdf_status.str_to_date(),
                           'Expected None due to empty date')
+
+    def test_method_update_xml_element(self):
+        """
+        Tests the update_xml_element method
+        """
+
+        xccdf_status = self.create_status_object('ok')
+
+        new_state = 'test_state'
+
+        self.assertNotEqual(xccdf_status.text, new_state,
+                            'New state is equal to original')
+
+        xccdf_status.text = new_state
+        xccdf_status.update_xml_element()
+
+        self.assertEqual(xccdf_status.xml_element.text, new_state,
+                         'XML state does not match new state')
+        self.assertEqual(xccdf_status.text, new_state,
+                         'Title state does not match new state')
+
+    def test_method_update_xml_element_empty_instance(self):
+        """
+        Tests the update_xml_element method with an empty instance
+        """
+
+        xccdf_status = Status(state=STATUS_VALUE_CHOICES[0])
+
+        self.assertFalse(hasattr(xccdf_status, 'xml_element'),
+                         'XML element is defined')
+
+        xccdf_status.update_xml_element()
+
+        self.assertTrue(hasattr(xccdf_status, 'xml_element'),
+                        'XML element is not defined')
+
+    def test_method_to_xml_string(self):
+        """
+        Tests the to_xml_string method
+        """
+
+        xccdf_status = self.create_status_object('ok')
+
+        xml_content = xccdf_status.to_xml_string()
+
+        new_xccdf_select = Status(
+            etree.fromstring(xml_content.encode('utf-8')))
+
+        self.assertEqual(xccdf_status.text, new_xccdf_select.text,
+                         'Status state does not match')
 
 
 def suite():
