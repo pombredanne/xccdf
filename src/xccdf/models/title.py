@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Python stdlib
-import sys
-
 # lxml
 from lxml import etree
 
@@ -25,10 +22,7 @@ class Title(Element):
         """
         tag_name = 'title' if xml_element is None else None
 
-        if sys.version_info[0] >= 3:
-            super().__init__(xml_element, tag_name)
-        else:
-            super(Title, self).__init__(xml_element, tag_name)
+        super(Title, self).__init__(xml_element, tag_name)
 
     def __str__(self):
         """

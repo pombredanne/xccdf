@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Python stdlib
-import sys
-
 # XCCDF
 from xccdf.models.html_element import HTMLElement
 
@@ -22,10 +19,7 @@ class RearMatter(HTMLElement):
 
         tag_name = 'rear-matter' if xml_element is None else None
 
-        if sys.version_info[0] >= 3:
-            super().__init__(xml_element, tag_name)
-        else:
-            super(RearMatter, self).__init__(xml_element, tag_name)
+        super(RearMatter, self).__init__(xml_element, tag_name)
 
     def __str__(self):
         """

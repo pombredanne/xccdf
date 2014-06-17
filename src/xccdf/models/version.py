@@ -3,7 +3,6 @@
 # Python stdlib
 from datetime import datetime
 import re
-import sys
 
 # lxml
 from lxml import etree
@@ -34,10 +33,7 @@ class Version(Element):
         tag_name = 'version' if xml_element is None else None
         self.text = version
 
-        if sys.version_info[0] >= 3:
-            super().__init__(xml_element, tag_name)
-        else:
-            super(Version, self).__init__(xml_element, tag_name)
+        super(Version, self).__init__(xml_element, tag_name)
 
         if (not hasattr(self, 'text') or
                 self.text == '' or self.text is None):
@@ -121,10 +117,7 @@ class TailoringVersion(Version):
 
         self.time = time
 
-        if sys.version_info[0] >= 3:
-            super().__init__(xml_element, version)
-        else:
-            super(TailoringVersion, self).__init__(xml_element, version)
+        super(TailoringVersion, self).__init__(xml_element, version)
 
         if (not hasattr(self, 'time') or
                 self.time == '' or self.time is None):

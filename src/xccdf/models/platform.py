@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Python stdlib
-import sys
-
 # lxml
 from lxml import etree
 
@@ -30,10 +27,7 @@ class Platform(Element):
         tag_name = 'platform' if xml_element is None else None
         self.idref = idref
 
-        if sys.version_info[0] >= 3:
-            super().__init__(xml_element, tag_name)
-        else:
-            super(Platform, self).__init__(xml_element, tag_name)
+        super(Platform, self).__init__(xml_element, tag_name)
 
         if (not hasattr(self, 'idref')
                 or self.idref == ''
