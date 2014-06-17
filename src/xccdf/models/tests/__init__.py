@@ -1,3 +1,5 @@
+import unittest
+
 from xccdf.models.tests import test_element
 from xccdf.models.tests import test_status
 from xccdf.models.tests import test_title
@@ -14,7 +16,6 @@ from xccdf.models.tests import test_tailoring
 
 
 def suite():
-    import unittest
     suite = unittest.TestSuite()
     suite.addTests(test_element.suite())
     suite.addTests(test_status.suite())

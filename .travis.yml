@@ -8,4 +8,5 @@ script:
     - coverage run --source=xccdf --omit="*tests*,*exception*" setup.py test
     - coverage report -m
 after_success:
+    - flake8 .
     - coveralls

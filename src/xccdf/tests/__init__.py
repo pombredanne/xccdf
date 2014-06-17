@@ -1,8 +1,8 @@
 from xccdf.models import tests
+import unittest
 
 
 def suite():
-    import unittest
     suite = unittest.TestSuite()
     suite.addTests(tests.suite())
     return suite
