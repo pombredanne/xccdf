@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -72,9 +73,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'id attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_tailoring_element('no_id')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_tailoring_element('no_id')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_tailoring_element('no_id')
 
     def test_init_invalid_id(self):
         """
@@ -82,9 +89,14 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'id invalid format'
-        with self.assertRaisesRegex(InvalidValueException,
-                                    error_msg):
-            self.create_tailoring_element('invalid_id')
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(InvalidValueException,
+                                        error_msg):
+                self.create_tailoring_element('invalid_id')
+        else:
+            with self.assertRaisesRegexp(InvalidValueException,
+                                         error_msg):
+                self.create_tailoring_element('invalid_id')
 
     def test_init_with_empty_instance(self):
         """
@@ -92,9 +104,14 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or id are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Tailoring()
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Tailoring()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Tailoring()
 
     def test_init_no_xml_element(self):
         """
@@ -117,9 +134,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'version element found more than once'
-        with self.assertRaisesRegex(CardinalityException,
-                                    error_msg):
-            self.create_tailoring_element('duplicated_version')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(CardinalityException,
+                                        error_msg):
+                self.create_tailoring_element('duplicated_version')
+        else:
+            with self.assertRaisesRegexp(CardinalityException,
+                                         error_msg):
+                self.create_tailoring_element('duplicated_version')
 
     def test_init_no_version(self):
         """
@@ -127,9 +150,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'version element is required'
-        with self.assertRaisesRegex(CardinalityException,
-                                    error_msg):
-            self.create_tailoring_element('no_version')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(CardinalityException,
+                                        error_msg):
+                self.create_tailoring_element('no_version')
+        else:
+            with self.assertRaisesRegexp(CardinalityException,
+                                         error_msg):
+                self.create_tailoring_element('no_version')
 
     def test_init_no_title(self):
         """
@@ -137,9 +166,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'Profile element is required at least once'
-        with self.assertRaisesRegex(CardinalityException,
-                                    error_msg):
-            self.create_tailoring_element('no_profile')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(CardinalityException,
+                                        error_msg):
+                self.create_tailoring_element('no_profile')
+        else:
+            with self.assertRaisesRegexp(CardinalityException,
+                                         error_msg):
+                self.create_tailoring_element('no_profile')
 
     def test_print_object(self):
         """

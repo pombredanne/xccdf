@@ -2,6 +2,7 @@
 
 # Python stdlib
 from datetime import date
+import sys
 
 # lxml
 from lxml import etree
@@ -31,7 +32,11 @@ class Status(Element):
 
         self.text = state
         tag_name = 'status' if xml_element is None else None
-        super().__init__(xml_element, tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(Status, self).__init__(xml_element, tag_name)
 
         if self.text not in STATUS_VALUE_CHOICES:
             val = '{val} is not valid. Must '\

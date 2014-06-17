@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -82,9 +83,15 @@ class VersionTestCase(unittest.TestCase):
         """
 
         error_msg = 'version content is required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_version_object('no_content')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_version_object('no_content')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_version_object('no_content')
 
     def test_init_no_xml_element(self):
         """
@@ -107,9 +114,15 @@ class VersionTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or version are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Version()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Version()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Version()
 
     def test_print_object(self):
         """
@@ -218,9 +231,14 @@ class VersionTestCase(unittest.TestCase):
         """
 
         error_msg = 'time is required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_tailoring_version_object('no_time')
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_tailoring_version_object('no_time')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_tailoring_version_object('no_time')
 
 
 def suite():

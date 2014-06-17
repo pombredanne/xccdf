@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 from datetime import date
 
 # lxml
@@ -73,9 +74,15 @@ class StatusTestCase(unittest.TestCase):
         xml_element = self.load_example_element('ko')
 
         error_msg = 'is not valid. Must be one of this'
-        with self.assertRaisesRegex(InvalidValueException,
-                                    error_msg):
-            Status(xml_element)
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(InvalidValueException,
+                                        error_msg):
+                Status(xml_element)
+        else:
+            with self.assertRaisesRegexp(InvalidValueException,
+                                         error_msg):
+                Status(xml_element)
 
     def test_init_no_date(self):
         """
@@ -105,9 +112,15 @@ class StatusTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or state are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Status()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Status()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Status()
 
     def test_print_object(self):
         """

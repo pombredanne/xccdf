@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -70,9 +71,15 @@ class PlatformTestCase(unittest.TestCase):
         """
 
         error_msg = 'idref attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_platform_object('no_idref')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_platform_object('no_idref')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_platform_object('no_idref')
 
     def test_init_no_xml_element(self):
         """
@@ -93,9 +100,15 @@ class PlatformTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or idref are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Platform()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Platform()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Platform()
 
     def test_print_object(self):
         """

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Python stdlib
+import sys
+
 # lxml
 from lxml import etree
 
@@ -35,7 +38,11 @@ class Profile(Element):
             raise ValueError('either xml_element or id are required')
         tag_name = 'Profile' if xml_element is None else None
         self.id = id
-        super().__init__(xml_element, tag_name=tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name=tag_name)
+        else:
+            super(Profile, self).__init__(xml_element, tag_name=tag_name)
 
         if (not hasattr(self, 'id')
                 or self.id == ''

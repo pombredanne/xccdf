@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Python stdlib
+import sys
+
 # lxml
 from lxml import etree
 
@@ -30,7 +33,11 @@ class Select(Element):
             self.selected = 'true'
         else:
             self.selected = 'false'
-        super().__init__(xml_element, tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(Select, self).__init__(xml_element, tag_name)
 
         if (not hasattr(self, 'idref')
                 or self.idref == ''

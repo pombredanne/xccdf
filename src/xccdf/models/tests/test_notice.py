@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -70,9 +71,15 @@ class NoticeTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or id are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Notice()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Notice()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Notice()
 
     def test_init_no_xml_element(self):
         """
@@ -93,9 +100,15 @@ class NoticeTestCase(unittest.TestCase):
         """
 
         error_msg = 'id attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_notice_object('no_id')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_notice_object('no_id')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_notice_object('no_id')
 
     def test_print_object(self):
         """

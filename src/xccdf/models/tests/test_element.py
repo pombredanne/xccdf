@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -83,9 +84,15 @@ class ElementTestCase(unittest.TestCase):
         tag_name = None
 
         error_msg = 'either xml_element or tag_name are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Element(xml_element, tag_name)
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Element(xml_element, tag_name)
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Element(xml_element, tag_name)
 
     def test_print_object(self):
         """

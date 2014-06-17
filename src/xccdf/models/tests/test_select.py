@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -88,9 +89,15 @@ class SelectTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or idref are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Select()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Select()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Select()
 
     def test_init_no_xml_element_selected(self):
         """
@@ -114,9 +121,15 @@ class SelectTestCase(unittest.TestCase):
         """
 
         error_msg = 'idref attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_select_object('no_idref')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_select_object('no_idref')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_select_object('no_idref')
 
     def test_init_invalid_selected(self):
         """
@@ -124,9 +137,15 @@ class SelectTestCase(unittest.TestCase):
         """
 
         error_msg = 'selected attribute has a invalid value'
-        with self.assertRaisesRegex(InvalidValueException,
-                                    error_msg):
-            self.create_select_object('invalid_selected')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(InvalidValueException,
+                                        error_msg):
+                self.create_select_object('invalid_selected')
+        else:
+            with self.assertRaisesRegexp(InvalidValueException,
+                                         error_msg):
+                self.create_select_object('invalid_selected')
 
     def test_print_object(self):
         """

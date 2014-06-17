@@ -2,6 +2,7 @@
 
 # Python stdlib
 import re
+import sys
 
 # lxml
 from lxml import etree
@@ -36,14 +37,18 @@ class Tailoring(Element):
             raise ValueError('either xml_element or id are required')
         tag_name = 'Tailoring' if xml_element is None else None
         self.id = id
-        super().__init__(xml_element, tag_name=tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name=tag_name)
+        else:
+            super(Tailoring, self).__init__(xml_element, tag_name=tag_name)
 
         if (not hasattr(self, 'id')
                 or self.id == ''
                 or self.id is None):
             raise RequiredAttributeException('id attribute required')
 
-        if re.fullmatch(r'xccdf_(\w+)_tailoring_(\w+)', self.id) is None:
+        if re.match(r'xccdf_(\w+)_tailoring_(\w+)', self.id) is None:
             raise InvalidValueException('id invalid format')
 
         if xml_element is not None:

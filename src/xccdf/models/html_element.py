@@ -3,6 +3,7 @@
 # Python stdlib
 from xml.etree import ElementTree
 import re
+import sys
 
 # lxml
 from lxml import etree
@@ -25,7 +26,11 @@ class HTMLElement(Element):
         :param lxml.etree._Element xml_element: XML element to load
         """
 
-        super().__init__(xml_element, tag_name)
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(HTMLElement, self).__init__(xml_element, tag_name)
+
         if xml_element is not None:
             self.import_element(xml_element)
 
@@ -34,7 +39,10 @@ class HTMLElement(Element):
         Imports the element from an ElementTree element and loads its content
         """
 
-        super().import_element(xml_element)
+        if sys.version_info[0] >= 3:
+            super().import_element(xml_element)
+        else:
+            super(HTMLElement, self).import_element(xml_element)
 
         self.content = self.get_html_content()
 
@@ -46,7 +54,10 @@ class HTMLElement(Element):
         :rtype: dict
         """
 
-        element_dict = super().as_dict()
+        if sys.version_info[0] >= 3:
+            element_dict = super().as_dict()
+        else:
+            element_dict = super(HTMLElement, self).as_dict()
         if hasattr(self, 'content'):
             element_dict['content'] = self.content
 

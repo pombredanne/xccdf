@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Python stdlib
+import sys
+
 # lxml
 from lxml import etree
 
@@ -21,7 +24,11 @@ class Title(Element):
         :param lxml.etree._Element xml_element: XML element to load_xml_attrs
         """
         tag_name = 'title' if xml_element is None else None
-        super().__init__(xml_element, tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(Title, self).__init__(xml_element, tag_name)
 
     def __str__(self):
         """

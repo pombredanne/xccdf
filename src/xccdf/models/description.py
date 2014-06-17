@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Python stdlib
+import sys
+
 # lxml
 from lxml import etree
 
@@ -22,7 +25,10 @@ class Description(HTMLElement):
 
         tag_name = 'description' if xml_element is None else None
 
-        super().__init__(xml_element, tag_name)
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(Description, self).__init__(xml_element, tag_name)
 
     def __str__(self):
         """
@@ -41,7 +47,10 @@ class Description(HTMLElement):
         Updates the xml element contents to matches the instance contents
         """
 
-        super().update_xml_element()
+        if sys.version_info[0] >= 3:
+            super().update_xml_element()
+        else:
+            super(Description, self).update_xml_element()
 
         if hasattr(self, 'lang'):
             self.xml_element.set(

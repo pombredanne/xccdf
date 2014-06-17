@@ -4,6 +4,7 @@
 import unittest
 import os
 import io
+import sys
 
 # lxml
 from lxml import etree
@@ -71,9 +72,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'id attribute required'
-        with self.assertRaisesRegex(RequiredAttributeException,
-                                    error_msg):
-            self.create_profile_object('no_id')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(RequiredAttributeException,
+                                        error_msg):
+                self.create_profile_object('no_id')
+        else:
+            with self.assertRaisesRegexp(RequiredAttributeException,
+                                         error_msg):
+                self.create_profile_object('no_id')
 
     def test_init_with_empty_instance(self):
         """
@@ -81,9 +88,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'either xml_element or id are required'
-        with self.assertRaisesRegex(ValueError,
-                                    error_msg):
-            Profile()
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(ValueError,
+                                        error_msg):
+                Profile()
+        else:
+            with self.assertRaisesRegexp(ValueError,
+                                         error_msg):
+                Profile()
 
     def test_init_no_xml_element(self):
         """
@@ -106,9 +119,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'version element found more than once'
-        with self.assertRaisesRegex(CardinalityException,
-                                    error_msg):
-            self.create_profile_object('duplicated_version')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(CardinalityException,
+                                        error_msg):
+                self.create_profile_object('duplicated_version')
+        else:
+            with self.assertRaisesRegexp(CardinalityException,
+                                         error_msg):
+                self.create_profile_object('duplicated_version')
 
     def test_init_no_title(self):
         """
@@ -116,9 +135,15 @@ class ProfileTestCase(unittest.TestCase):
         """
 
         error_msg = 'title element is required at least once'
-        with self.assertRaisesRegex(CardinalityException,
-                                    error_msg):
-            self.create_profile_object('no_title')
+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
+            with self.assertRaisesRegex(CardinalityException,
+                                        error_msg):
+                self.create_profile_object('no_title')
+        else:
+            with self.assertRaisesRegexp(CardinalityException,
+                                         error_msg):
+                self.create_profile_object('no_title')
 
     def test_print_object(self):
         """

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Python stdlib
+import sys
+
 # XCCDF
 from xccdf.models.html_element import HTMLElement
 from xccdf.exceptions import RequiredAttributeException
@@ -23,7 +26,11 @@ class Notice(HTMLElement):
 
         tag_name = 'notice' if xml_element is None else None
         self.id = id
-        super().__init__(xml_element, tag_name)
+
+        if sys.version_info[0] >= 3:
+            super().__init__(xml_element, tag_name)
+        else:
+            super(Notice, self).__init__(xml_element, tag_name)
 
         if not hasattr(self, 'id') or self.id == '' or self.id is None:
             raise RequiredAttributeException('id attribute required')
