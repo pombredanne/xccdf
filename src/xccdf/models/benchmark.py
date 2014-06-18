@@ -9,17 +9,21 @@ from xccdf.models.version import Version
 from xccdf.models.status import Status
 from xccdf.models.title import Title
 from xccdf.models.description import Description
+from xccdf.models.front_matter import FrontMatter
+from xccdf.models.rear_matter import RearMatter
 from xccdf.models.platform import Platform
+from xccdf.models.profile import Profile
+from xccdf.models.group import Group
 from xccdf.models.rule import Rule
 from xccdf.constants import NSMAP
 from xccdf.exceptions import RequiredAttributeException
 from xccdf.exceptions import CardinalityException
 
 
-class Group(Element):
+class Benchmark(Element):
 
     """
-    Class to parse <xccdf:Group> element
+    Class to parse <xccdf:Benchmark> element
     """
 
     def __init__(self, xml_element=None, id=None):
@@ -27,7 +31,7 @@ class Group(Element):
         Initializes the attrs attribute to serialize the attributes
 
         :param lxml.etree._Element xml_element: XML element to load
-        :param str id: Unique ID of the Group.
+        :param str id: Unique ID of the Benchmark.
                        If xml_element is present, this parameter is ignored
         """
 
@@ -35,8 +39,8 @@ class Group(Element):
             raise ValueError('either xml_element or id are required')
 
         self.id = id
-        tag_name = 'Group' if xml_element is None else None
-        super(Group, self).__init__(xml_element, tag_name)
+        tag_name = 'Benchmark' if xml_element is None else None
+        super(Benchmark, self).__init__(xml_element, tag_name)
 
         if (not hasattr(self, 'id')
                 or self.id == ''
@@ -50,10 +54,10 @@ class Group(Element):
 
     def __str__(self):
         """
-        String representation of Group object
+        String representation of Benchmark object
         """
 
-        string_value = 'Group {id}'.format(id=self.id)
+        string_value = 'Benchmark {id}'.format(id=self.id)
         return string_value
 
     def load_children(self):
@@ -63,10 +67,13 @@ class Group(Element):
         # Containers
         children = list()
         statuses = list()
-        version = None
         titles = list()
         descriptions = list()
+        front_matters = list()
+        rear_matters = list()
         platforms = list()
+        version = None
+        profiles = list()
         groups = list()
         rules = list()
 
@@ -85,80 +92,44 @@ class Group(Element):
                 titles.append(Title(element))
             elif tag == 'description':
                 descriptions.append(Description(element))
+            elif tag == 'front-matter':
+                front_matters.append(FrontMatter(element))
+            elif tag == 'rear-matter':
+                rear_matters.append(RearMatter(element))
             elif tag == 'platform':
                 platforms.append(Platform(element))
+            elif tag == 'Profile':
+                profiles.append(Profile(element))
             elif tag == 'Group':
                 groups.append(Group(element))
-            elif tag == 'Rule':
-                rules.append(Rule(element))
+            # elif tag == 'Rule':
+            #     rules.append(Rule(element))
 
         # Element validation
-        if len(groups) <= 0 and len(rules) <= 0:
-            error_msg = 'a group must contain at least a group or a rule'
+        if version is None:
+            error_msg = 'a Benchmark must contain a version element'
+            raise CardinalityException(error_msg)
+        elif len(groups) <= 0 and len(rules) <= 0:
+            error_msg = 'a Benchmark must contain at least a group or a rule'
+            raise CardinalityException(error_msg)
+        elif len(statuses) <= 0:
+            error_msg = 'a Benchmark must contain at least a status element'
             raise CardinalityException(error_msg)
 
         # List construction
         children.extend(statuses)
-        if version is not None:
-            children.append(version)
         children.extend(titles)
         children.extend(descriptions)
+        children.extend(front_matters)
+        children.extend(rear_matters)
         children.extend(platforms)
+        if version is not None:
+            children.append(version)
+        children.extend(profiles)
         children.extend(groups)
         children.extend(rules)
 
         return children
-
-    def as_dict(self):
-        """
-        Serializes the object necessary data in a dictionary
-
-        :returns: Serialized data in a dictionary
-        :rtype: dict
-        """
-
-        result_dict = super(Group, self).as_dict()
-
-        statuses = list()
-        version = None
-        titles = list()
-        descriptions = list()
-        platforms = list()
-        groups = list()
-        rules = list()
-
-        for child in self.children:
-            if isinstance(child, Version):
-                version = child.as_dict()
-            elif isinstance(child, Status):
-                statuses.append(child.as_dict())
-            elif isinstance(child, Title):
-                titles.append(child.as_dict())
-            elif isinstance(child, Description):
-                descriptions.append(child.as_dict())
-            elif isinstance(child, Platform):
-                platforms.append(child.as_dict())
-            elif isinstance(child, Group):
-                groups.append(child.as_dict())
-            elif isinstance(child, Rule):
-                rules.append(child.as_dict())
-
-        if version is not None:
-            result_dict['version'] = version
-        if len(statuses) > 0:
-            result_dict['statuses'] = statuses
-        if len(titles) > 0:
-            result_dict['titles'] = titles
-        if len(descriptions) > 0:
-            result_dict['descriptions'] = descriptions
-        if len(platforms) > 0:
-            result_dict['platforms'] = platforms
-        if len(groups) > 0:
-            result_dict['groups'] = groups
-        if len(rules) > 0:
-            result_dict['rules'] = rules
-
-        return result_dict
 
     def update_xml_element(self):
         """
@@ -170,16 +141,15 @@ class Group(Element):
 
         self.xml_element.clear()
 
-        if hasattr(self, 'abstract'):
-            self.xml_element.set('abstract', self.abstract)
-        if hasattr(self, 'prohibitChanges'):
-            self.xml_element.set('prohibitChanges', self.prohibitChanges)
-        if hasattr(self, 'hidden'):
-            self.xml_element.set('hidden', self.hidden)
-        if hasattr(self, 'selected'):
-            self.xml_element.set('selected', self.selected)
-        if hasattr(self, 'weight'):
-            self.xml_element.set('weight', self.weight)
+        if hasattr(self, 'resolved'):
+            self.xml_element.set('resolved', self.resolved)
+        if hasattr(self, 'style'):
+            self.xml_element.set('style', self.style)
+        if hasattr(self, 'style_href'):
+            self.xml_element.set('style-href', self.style_href)
+        if hasattr(self, 'lang'):
+            self.xml_element.set(
+                '{http://www.w3.org/XML/1998/namespace}lang', self.lang)
         self.xml_element.set('id', self.id)
 
         for child in self.children:
@@ -187,3 +157,64 @@ class Group(Element):
                 child.update_xml_element()
                 if hasattr(child, 'xml_element'):
                     self.xml_element.append(child.xml_element)
+
+    def as_dict(self):
+        """
+        Serializes the object necessary data in a dictionary
+
+        :returns: Serialized data in a dictionary
+        :rtype: dict
+        """
+
+        result_dict = super(Benchmark, self).as_dict()
+
+        statuses = list()
+        titles = list()
+        descriptions = list()
+        front_matters = list()
+        rear_matters = list()
+        platforms = list()
+        version = None
+        profiles = list()
+        groups = list()
+
+        for child in self.children:
+            if isinstance(child, Version):
+                version = child.as_dict()
+            elif isinstance(child, Status):
+                statuses.append(child.as_dict())
+            elif isinstance(child, Title):
+                titles.append(child.as_dict())
+            elif isinstance(child, Description):
+                descriptions.append(child.as_dict())
+            elif isinstance(child, FrontMatter):
+                front_matters.append(child.as_dict())
+            elif isinstance(child, RearMatter):
+                rear_matters.append(child.as_dict())
+            elif isinstance(child, Platform):
+                platforms.append(child.as_dict())
+            elif isinstance(child, Profile):
+                profiles.append(child.as_dict())
+            elif isinstance(child, Group):
+                groups.append(child.as_dict())
+
+        if version is not None:
+            result_dict['version'] = version
+        if len(statuses) > 0:
+            result_dict['statuses'] = statuses
+        if len(titles) > 0:
+            result_dict['titles'] = titles
+        if len(descriptions) > 0:
+            result_dict['descriptions'] = descriptions
+        if len(front_matters) > 0:
+            result_dict['front_matters'] = front_matters
+        if len(rear_matters) > 0:
+            result_dict['rear_matters'] = rear_matters
+        if len(platforms) > 0:
+            result_dict['platforms'] = platforms
+        if len(profiles) > 0:
+            result_dict['profiles'] = profiles
+        if len(groups) > 0:
+            result_dict['groups'] = groups
+
+        return result_dict

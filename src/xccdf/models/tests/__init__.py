@@ -16,6 +16,7 @@ from xccdf.models.tests import test_tailoring
 from xccdf.models.tests import test_ident
 from xccdf.models.tests import test_rule
 from xccdf.models.tests import test_group
+from xccdf.models.tests import test_benchmark
 
 
 def suite():
@@ -36,6 +37,7 @@ def suite():
     suite.addTests(test_ident.suite())
     suite.addTests(test_rule.suite())
     suite.addTests(test_group.suite())
+    suite.addTests(test_benchmark.suite())
     return suite
 
 if __name__ == '__main__':

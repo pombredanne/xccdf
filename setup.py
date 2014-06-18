@@ -11,7 +11,7 @@ description = "XCCDF: Extensible Configuration Checklist "\
 setup(
     # Package info
     name='xccdf',
-    version='0.1.0',
+    version='0.1.5',
     description=description,
     author='Rodrigo Núñez Mujica',
     author_email='rnunezmujica@icloud.com',

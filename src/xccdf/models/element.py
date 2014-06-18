@@ -88,6 +88,7 @@ class Element(object):
 
             for variable, value in iter(xml_attrs.items()):
                 uri, tag = Element.get_namespace_and_tag(variable)
+                tag = tag.replace('-', '_')
                 attrs_list.append(tag)
                 setattr(self, tag, value)
 
