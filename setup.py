@@ -2,8 +2,8 @@
 
 from setuptools import setup, find_packages
 
-with open('README.md') as readme:
-    long_desc = readme.read()
+# with open('README.md') as readme:
+#     long_desc = readme.read()
 
 description = "XCCDF: Extensible Configuration Checklist "\
               "Description Format Python Library."
@@ -11,12 +11,12 @@ description = "XCCDF: Extensible Configuration Checklist "\
 setup(
     # Package info
     name='xccdf',
-    version='0.0.0',
+    version='0.1.0',
     description=description,
     author='Rodrigo Núñez Mujica',
     author_email='rnunezmujica@icloud.com',
-    url='',
-    long_description=long_desc,
+    url='https://github.com/Dalveen84/xccdf',
+    long_description=description,
 
     # Package classifiers
     classifiers=[
@@ -25,6 +25,8 @@ setup(
         "License :: OSI Approved :: GNU Lesser "
         "General Public License v3 (LGPLv3)",
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: System :: Systems Administration',
