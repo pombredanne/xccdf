@@ -47,7 +47,10 @@ class Element(object):
 
         self.load_xml_attrs()
 
-        self.text = self.xml_element.text
+        if self.xml_element.text is None:
+            self.text = ''
+        else:
+            self.text = self.xml_element.text
 
     def as_dict(self):
         """

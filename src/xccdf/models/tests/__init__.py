@@ -13,6 +13,9 @@ from xccdf.models.tests import test_version
 from xccdf.models.tests import test_select
 from xccdf.models.tests import test_profile
 from xccdf.models.tests import test_tailoring
+from xccdf.models.tests import test_ident
+from xccdf.models.tests import test_rule
+from xccdf.models.tests import test_group
 
 
 def suite():
@@ -30,6 +33,9 @@ def suite():
     suite.addTests(test_select.suite())
     suite.addTests(test_profile.suite())
     suite.addTests(test_tailoring.suite())
+    suite.addTests(test_ident.suite())
+    suite.addTests(test_rule.suite())
+    suite.addTests(test_group.suite())
     return suite
 
 if __name__ == '__main__':

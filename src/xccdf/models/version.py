@@ -35,10 +35,6 @@ class Version(Element):
 
         super(Version, self).__init__(xml_element, tag_name)
 
-        if (not hasattr(self, 'text') or
-                self.text == '' or self.text is None):
-            raise RequiredAttributeException('version content is required')
-
         if hasattr(self, 'time') and isinstance(self.time, str):
             self.time = self.str_to_time()
 

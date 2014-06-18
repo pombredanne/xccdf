@@ -77,22 +77,6 @@ class VersionTestCase(unittest.TestCase):
 
         self.assertTrue(hasattr(xccdf_version, 'text'))
 
-    def test_init_no_version(self):
-        """
-        Tests the class constructor without a version number
-        """
-
-        error_msg = 'version content is required'
-
-        if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
-            with self.assertRaisesRegex(RequiredAttributeException,
-                                        error_msg):
-                self.create_version_object('no_content')
-        else:
-            with self.assertRaisesRegexp(RequiredAttributeException,
-                                         error_msg):
-                self.create_version_object('no_content')
-
     def test_init_no_xml_element(self):
         """
         Tests the class constructor from an empty instance
