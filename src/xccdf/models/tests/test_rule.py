@@ -11,6 +11,12 @@ from lxml import etree
 
 # XCCDF
 from xccdf.models.rule import Rule
+from xccdf.models.status import Status
+from xccdf.models.version import Version
+from xccdf.models.title import Title
+from xccdf.models.description import Description
+from xccdf.models.platform import Platform
+from xccdf.models.ident import Ident
 from xccdf.exceptions import RequiredAttributeException
 from xccdf.exceptions import CardinalityException
 
@@ -190,6 +196,92 @@ class RuleTestCase(unittest.TestCase):
 
         self.assertTrue(hasattr(xccdf_rule, 'xml_element'),
                         'XML element is not defined')
+
+    def test_method_as_dict(self):
+        """
+        Tests the as_dict method
+        """
+
+        xccdf_rule = self.create_rule_object('ok')
+
+        result_dict = xccdf_rule.as_dict()
+
+        self.assertIsInstance(result_dict, dict,
+                              'as_dict result is not a dictionary')
+
+        statuses = list()
+        version = None
+        titles = list()
+        descriptions = list()
+        platforms = list()
+        idents = list()
+
+        for child in xccdf_rule.children:
+            if isinstance(child, Version):
+                version = child.as_dict()
+            elif isinstance(child, Status):
+                statuses.append(child.as_dict())
+            elif isinstance(child, Title):
+                titles.append(child.as_dict())
+            elif isinstance(child, Description):
+                descriptions.append(child.as_dict())
+            elif isinstance(child, Platform):
+                platforms.append(child.as_dict())
+            elif isinstance(child, Ident):
+                idents.append(child.as_dict())
+
+        if version is not None:
+            result_version = result_dict.get('version', None)
+            self.assertIsNotNone(result_version,
+                                 'Version not defined in dict result')
+            self.assertEqual(result_version, version, 'Version does not match')
+        if len(statuses) > 0:
+            result_statuses = result_dict.get('statuses', None)
+            self.assertIsNotNone(result_statuses,
+                                 'Statuses list not defined in dict result')
+            self.assertIsInstance(result_statuses, list,
+                                  'Statuses list is not a list')
+            for status in statuses:
+                self.assertIn(status, result_statuses,
+                              'Status not found in statuses result list')
+        if len(titles) > 0:
+            result_titles = result_dict.get('titles', None)
+            self.assertIsNotNone(result_titles,
+                                 'Titles list not defined in dict result')
+            self.assertIsInstance(result_titles, list,
+                                  'Titles list is not a list')
+            for title in titles:
+                self.assertIn(title, result_titles,
+                              'Title not found in titles result list')
+        if len(descriptions) > 0:
+            result_descriptions = result_dict.get('descriptions', None)
+            error_msg = 'Descriptions list not defined in dict result'
+            self.assertIsNotNone(result_descriptions, error_msg)
+            self.assertIsInstance(result_descriptions, list,
+                                  'Descriptions list is not a list')
+            error_msg = 'Description not found in descriptions result list'
+            for description in descriptions:
+                self.assertIn(description, result_descriptions, error_msg)
+
+        if len(platforms) > 0:
+            result_platforms = result_dict.get('platforms', None)
+            self.assertIsNotNone(result_platforms,
+                                 'Platforms list not defined in dict result')
+            self.assertIsInstance(result_platforms, list,
+                                  'Platforms list is not a list')
+            for platform in platforms:
+                self.assertIn(platform, result_platforms,
+                              'Platform not found in platforms result list')
+
+        if len(idents) > 0:
+            result_idents = result_dict.get('idents', None)
+            self.assertIsNotNone(result_idents,
+                                 'Idents list not defined in dict result')
+            self.assertIsInstance(result_idents, list,
+                                  'Idents list is not a list')
+            for ident in idents:
+                self.assertIn(ident, result_idents,
+                              'Ident not found in idents result list')
 
 
 def suite():

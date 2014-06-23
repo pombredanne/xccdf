@@ -14,6 +14,8 @@ class InvalidValueException(Exception):
 
     def __init__(self, value=None):
 
+        super(InvalidValueException, self).__init__()
+
         if value is not None:
             self.value = value
 
@@ -40,6 +42,8 @@ class RequiredAttributeException(Exception):
     value = 'The required attribute is missing'
 
     def __init__(self, value=None):
+
+        super(RequiredAttributeException, self).__init__()
 
         if value is not None:
             self.value = value
@@ -69,6 +73,8 @@ class CardinalityException(Exception):
             'the cardinality rules of the parent'
 
     def __init__(self, value=None):
+
+        super(CardinalityException, self).__init__()
 
         if value is not None:
             self.value = value
