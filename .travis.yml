@@ -12,3 +12,5 @@ script:
 after_success:
     - flake8 .
     - coveralls
+    - radon cc -s src/xccdf
+    - radon mi src/xccdf
