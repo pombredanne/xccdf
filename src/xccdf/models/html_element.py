@@ -6,6 +6,7 @@ import re
 
 # lxml
 from lxml import etree
+from lxml.etree import _Comment
 
 # XCCDF
 from xccdf.models.element import Element
@@ -67,7 +68,10 @@ class HTMLElement(Element):
             content_list = ["" if xml.text is None else xml.text]
 
             def to_string(xml):
-                return ElementTree.tostring(xml).decode('utf-8')
+                if isinstance(xml, _Comment):
+                    return str(xml)
+                else:
+                    return ElementTree.tostring(xml).decode('utf-8')
 
             content_list += [to_string(e) for e in xml.getchildren()]
 
@@ -87,7 +91,7 @@ class HTMLElement(Element):
         """
 
         if hasattr(self, 'content') and self.content != '':
-            regex = r'<(?!/)'
+            regex = r'<(?!/)(?!!)'
             xml_content = re.sub(regex, '<xhtml:', self.content)
             return xml_content
         else:
