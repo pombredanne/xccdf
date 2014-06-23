@@ -9,6 +9,7 @@ from xml.etree import ElementTree
 
 # lxml
 from lxml import etree
+from lxml.etree import _Comment
 
 # XCCDF
 from xccdf.models.html_element import HTMLElement
