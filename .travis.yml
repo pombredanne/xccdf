@@ -7,10 +7,8 @@ install:
     - pip install -r requirements/tests.txt
     - python setup.py install
 script: 
-    - coverage run --source=xccdf --omit="*tests*,*exception*" setup.py test
-    - coverage report -m
+    - sh unit_tests.sh
 after_success:
-    - flake8 .
+    - sh code_quality.sh
+    - sh radon.sh
     - coveralls
-    - radon cc -s src/xccdf
-    - radon mi src/xccdf

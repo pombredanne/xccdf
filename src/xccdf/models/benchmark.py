@@ -14,7 +14,6 @@ from xccdf.models.rear_matter import RearMatter
 from xccdf.models.platform import Platform
 from xccdf.models.profile import Profile
 from xccdf.models.group import Group
-from xccdf.models.rule import Rule
 from xccdf.constants import NSMAP
 from xccdf.exceptions import RequiredAttributeException
 from xccdf.exceptions import CardinalityException

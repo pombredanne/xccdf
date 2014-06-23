@@ -1,13 +1,13 @@
 #!/bin/bash
 
 echo ################################################################################
-echo ####                              UNIT TESTS                                ####
+echo ####                         CICLOMATIC COMPLEXITY                          ####
 echo ################################################################################
 
-coverage run --source=xccdf --omit="*tests*,*exception*" setup.py test
+radon cc -s -a src/xccdf
 
 echo ################################################################################
-echo ####                             CODE COVERAGE                              ####
+echo ####                         MAINTAINABILITY INDEX                          ####
 echo ################################################################################
 
-coverage report -m
+radon mi -s src/xccdf
