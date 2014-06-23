@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/dalveen84/xccdf.png?label=ready&title=Ready)](https://waffle.io/dalveen84/xccdf)
 xccdf
 =====
 
