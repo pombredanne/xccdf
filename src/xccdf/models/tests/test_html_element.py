@@ -132,6 +132,36 @@ class HTMLElementTestCase(unittest.TestCase):
         self.assertEqual(xccdf_html_element.content, html_content,
                          'Parsed HTML content does not match')
 
+    def test_method_get_html_content_with_comments(self):
+        """
+        Tests the get_html_content method
+        """
+
+        xccdf_html_element = self.create_html_object('html_with_comments')
+
+        xml = xccdf_html_element.xml_element
+        content_list = ["" if xml.text is None else xml.text]
+
+        def to_string(xml):
+            if isinstance(xml, _Comment):
+                return str(xml)
+            else:
+                return ElementTree.tostring(xml).decode('utf-8')
+
+        content_list += [to_string(e) for e in xml.getchildren()]
+
+        full_xml_content = "".join(content_list)
+
+        # Parse tags to generate HTML valid content
+        html_content = re.sub(r'html:', '',
+                              re.sub(
+                                  r' xmlns:html=(["\'])(?:(?=(\\?))\2.)*?\1',
+                                  '',
+                                  full_xml_content))
+
+        self.assertEqual(xccdf_html_element.content, html_content,
+                         'Parsed HTML content does not match')
+
     def test_method_get_html_content_no_html(self):
         """
         Tests the get_html_content method without HTML content
