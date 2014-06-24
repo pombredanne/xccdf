@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.benchmark includes the class Benchmark
+to create or import a <xccdf:Benchmark> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -22,16 +31,19 @@ from xccdf.exceptions import CardinalityException
 class Benchmark(Element):
 
     """
-    Class to parse <xccdf:Benchmark> element
+    Class to parse <xccdf:Benchmark> element.
     """
 
     def __init__(self, xml_element=None, id=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
         :param str id: Unique ID of the Benchmark.
-                       If xml_element is present, this parameter is ignored
+                       If xml_element is present, this parameter is ignored.
+        :raises ValueError: If no parameter is given.
+        :raises RequiredAttributeException: If after importing the xml_element
+                                            the id attribute is missing.
         """
 
         if xml_element is None and id is None:
@@ -53,7 +65,10 @@ class Benchmark(Element):
 
     def __str__(self):
         """
-        String representation of Benchmark object
+        String representation of Benchmark object.
+
+        :returns: Benchmark object as a string.
+        :rtype: str
         """
 
         string_value = 'Benchmark {id}'.format(id=self.id)
@@ -61,7 +76,14 @@ class Benchmark(Element):
 
     def load_children(self):
         """
-        Load the subelements from the xml_element in its correspondent classes
+        Load the subelements from the xml_element in its correspondent classes.
+
+        :returns: List of child objects.
+        :rtype: list
+        :raises CardinalityException: If there is more than one Version child.
+        :raises CardinalityException: If there is no Version child.
+        :raises CardinalityException: If there is no Group and no Rule child.
+        :raises CardinalityException: If there is no Status element.
         """
         # Containers
         children = list()
@@ -106,13 +128,13 @@ class Benchmark(Element):
 
         # Element validation
         if version is None:
-            error_msg = 'a Benchmark must contain a version element'
+            error_msg = 'a Benchmark must contain a Version element'
             raise CardinalityException(error_msg)
         elif len(groups) <= 0 and len(rules) <= 0:
-            error_msg = 'a Benchmark must contain at least a group or a rule'
+            error_msg = 'a Benchmark must contain at least a Group or a Rule'
             raise CardinalityException(error_msg)
         elif len(statuses) <= 0:
-            error_msg = 'a Benchmark must contain at least a status element'
+            error_msg = 'a Benchmark must contain at least a Status element'
             raise CardinalityException(error_msg)
 
         # List construction
@@ -132,7 +154,10 @@ class Benchmark(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the XML element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -157,11 +182,13 @@ class Benchmark(Element):
                 if hasattr(child, 'xml_element'):
                     self.xml_element.append(child.xml_element)
 
+        return self.xml_element
+
     def as_dict(self):
         """
-        Serializes the object necessary data in a dictionary
+        Serializes the object necessary data in a dictionary.
 
-        :returns: Serialized data in a dictionary
+        :returns: Serialized data in a dictionary.
         :rtype: dict
         """
 

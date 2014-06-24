@@ -143,7 +143,7 @@ class BenchmarkTestCase(unittest.TestCase):
         Tests the class constructor with no version
         """
 
-        error_msg = 'a Benchmark must contain a version element'
+        error_msg = 'a Benchmark must contain a Version element'
 
         if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
             with self.assertRaisesRegex(CardinalityException,
@@ -159,7 +159,7 @@ class BenchmarkTestCase(unittest.TestCase):
         Tests the class constructor with no status
         """
 
-        error_msg = 'a Benchmark must contain at least a status element'
+        error_msg = 'a Benchmark must contain at least a Status element'
 
         if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
             with self.assertRaisesRegex(CardinalityException,
@@ -175,7 +175,7 @@ class BenchmarkTestCase(unittest.TestCase):
         Tests the class constructor with no children benchmarks or rules
         """
 
-        error_msg = 'a Benchmark must contain at least a group or a rule'
+        error_msg = 'a Benchmark must contain at least a Group or a Rule'
 
         if sys.version_info[0] >= 3 and sys.version_info[1] >= 2:
             with self.assertRaisesRegex(CardinalityException,

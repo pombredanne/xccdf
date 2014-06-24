@@ -1,17 +1,28 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.element includes the class Element,
+the base of the rest of models, getting the common attributes.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 
 class Element(object):
 
     """
-    Generic class to implement a XCCDF element
+    Generic class to implement a XCCDF element.
     """
 
     def __init__(self, xml_element=None, tag_name=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str tag_name: Tag name of the element.
+        :raises ValueError: If no parameter is given.
         """
 
         if xml_element is None and tag_name is None:
@@ -25,7 +36,10 @@ class Element(object):
 
     def __str__(self):
         """
-        String representation of Element object
+        String representation of Element object.
+
+        :returns: Element object as a string.
+        :rtype: str
         """
 
         string_value = ''
@@ -36,7 +50,9 @@ class Element(object):
 
     def import_element(self, xml_element):
         """
-        Imports the element from an lxml element and loads its content
+        Imports the element from an lxml element and loads its content.
+
+        :param lxml.etree._Element xml_element: XML element to import.
         """
 
         self.xml_element = xml_element
@@ -54,9 +70,9 @@ class Element(object):
 
     def as_dict(self):
         """
-        Serializes the object necessary data in a dictionary
+        Serializes the object necessary data in a dictionary.
 
-        :returns: Serialized data in a dictionary
+        :returns: Serialized data in a dictionary.
         :rtype: dict
         """
 
@@ -78,7 +94,10 @@ class Element(object):
 
     def load_xml_attrs(self):
         """
-        Load XML attributes as object attributes
+        Load XML attributes as object attributes.
+
+        :returns: List of parsed attributes.
+        :rtype: list
         """
 
         attrs_list = list()
@@ -94,13 +113,15 @@ class Element(object):
 
             self.attrs = attrs_list
 
+        return self.attrs
+
     @staticmethod
     def get_namespace_and_tag(name):
         """
-        Separates the namespace and tag from an element
+        Separates the namespace and tag from an element.
 
-        :param str name: Tag
-        :returns: Namespace URI and Tag namespace
+        :param str name: Tag.
+        :returns: Namespace URI and Tag namespace.
         :rtype: tuple
         """
 

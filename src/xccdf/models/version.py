@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.version includes the class Version
+to create or import a <xccdf:version> element.
+
+Also includes the class TailoringVersion to extend the Version class
+requiring the time attribute to be defined.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # Python stdlib
 from datetime import datetime
 import re
@@ -16,15 +28,16 @@ from xccdf.constants import NSMAP
 class Version(Element):
 
     """
-    Class to implement <xccdf:version> element
+    Class to implement <xccdf:version> element.
     """
 
     def __init__(self, xml_element=None, version=None):
         """
-        Initializes the Version class and loads its attributes
+        Initializes the Version class and loads its attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
-        :param str version: Version string
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str version: Version string.
+        :raises ValueError: If no parameter is given.
         """
 
         if xml_element is None and version is None:
@@ -40,7 +53,10 @@ class Version(Element):
 
     def __str__(self):
         """
-        String representation of Version object
+        String representation of Version object.
+
+        :returns: Version object as a string.
+        :rtype: str
         """
 
         string_value = 'version {version}'.format(version=self.text)
@@ -48,9 +64,9 @@ class Version(Element):
 
     def time_to_str(self):
         """
-        Formats time attribute to the XCCDF dateTime format
+        Formats time attribute to the XCCDF dateTime format.
 
-        :returns: time formatted string
+        :returns: time formatted string.
         :rtype: str
         """
 
@@ -58,9 +74,9 @@ class Version(Element):
 
     def str_to_time(self):
         """
-        Formats a XCCDF dateTime string to a datetime object
+        Formats a XCCDF dateTime string to a datetime object.
 
-        :returns: datetime object
+        :returns: datetime object.
         :rtype: datetime.datetime
         """
 
@@ -69,6 +85,9 @@ class Version(Element):
     def update_xml_element(self):
         """
         Updates the xml element contents to matches the instance contents
+
+        :returns: Updated XML element
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -79,6 +98,8 @@ class Version(Element):
         if hasattr(self, 'update'):
             self.xml_element.set('update', str(self.update))
         self.xml_element.text = self.text
+
+        return self.xml_element
 
     def to_xml_string(self):
         """
@@ -98,17 +119,18 @@ class TailoringVersion(Version):
 
     """
     Class to implement <xccdf:version> element
-    specific to the <xccdf:Tailoring> element
+    specific to the <xccdf:Tailoring> element.
     """
 
     def __init__(self, xml_element=None, version=None,
                  time=None):
         """
-        Initializes the TailoringVersion class and loads its attributes
+        Initializes the TailoringVersion class and loads its attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
-        :param str version: Version string
-        :param datetime.datetime time: Timestamp of this version
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str version: Version string.
+        :param datetime.datetime time: Timestamp of this version.
+        :raises RequiredAttributeException: If the time attribute is missing.
         """
 
         self.time = time

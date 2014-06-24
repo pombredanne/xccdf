@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.select includes the class Select
+to create or import a <xccdf:select> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -12,14 +21,21 @@ from xccdf.constants import NSMAP
 class Select(Element):
 
     """
-    Class to implement <xccdf:select> element
+    Class to implement <xccdf:select> element.
     """
 
     def __init__(self, xml_element=None, idref=None, selected=False):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str idref: Unique identifier of a Select element.
+        :param bool selected: Mark the Select element as selected.
+        :raises ValueError: If no parameter is given.
+        :raises RequiredAttributeException: If after importing the xml_element
+                                            the idref attribute is missing.
+        :raises InvalidValueException: If the imported selected attribute has
+                                       an invalid value.
         """
         if xml_element is None and idref is None:
             raise ValueError('either xml_element or idref are required')
@@ -44,7 +60,10 @@ class Select(Element):
 
     def __str__(self):
         """
-        String representation of Select object
+        String representation of Select object.
+
+        :returns: Select object as a string.
+        :rtype: str
         """
 
         string_value = 'select {idref} {selected}'.format(
@@ -54,9 +73,9 @@ class Select(Element):
     def is_selected(self):
         """
         Return if the select element is selected
-        or None if selected is not defined
+        or None if selected is not defined.
 
-        :returns: True, False or None
+        :returns: If the element is marked as selected.
         :rtype: bool or NoneType
         """
 
@@ -67,7 +86,10 @@ class Select(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -76,7 +98,16 @@ class Select(Element):
         self.xml_element.set('idref', str(self.idref))
         self.xml_element.set('selected', str(self.selected))
 
+        return self.xml_element
+
     def to_xml_string(self):
+        """
+        Exports the element in XML format.
+
+        :returns: element in XML format.
+        :rtype: str
+        """
+
         self.update_xml_element()
         xml = self.xml_element
 

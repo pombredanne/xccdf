@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.html_element includes the class HTMLElement,
+the base for every element with a HTML enabled text.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # Python stdlib
 from xml.etree import ElementTree
 import re
@@ -16,14 +25,15 @@ from xccdf.constants import NSMAP
 class HTMLElement(Element):
 
     """
-    Generic class to implement a XCCDF element with HTML enabled text
+    Generic class to implement a XCCDF element with HTML enabled text.
     """
 
     def __init__(self, xml_element=None, tag_name=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str tag_name: Tag name of the element.
         """
 
         super(HTMLElement, self).__init__(xml_element, tag_name)
@@ -33,7 +43,7 @@ class HTMLElement(Element):
 
     def import_element(self, xml_element):
         """
-        Imports the element from an ElementTree element and loads its content
+        Imports the element from an lxml element and loads its content.
         """
 
         super(HTMLElement, self).import_element(xml_element)
@@ -42,9 +52,9 @@ class HTMLElement(Element):
 
     def as_dict(self):
         """
-        Serializes the object necessary data in a dictionary
+        Serializes the object necessary data in a dictionary.
 
-        :returns: Serialized data in a dictionary
+        :returns: Serialized data in a dictionary.
         :rtype: dict
         """
 
@@ -58,7 +68,10 @@ class HTMLElement(Element):
     def get_html_content(self):
         """
         Parses the element and subelements and parses any HTML enabled text to
-        its original HTML form for rendering
+        its original HTML form for rendering.
+
+        :returns: Parsed HTML enabled text content.
+        :rtype: str
         """
 
         # Extract full element node content (including subelements)
@@ -87,7 +100,10 @@ class HTMLElement(Element):
 
     def convert_html_to_xml(self):
         """
-        Parses the HTML parsed texts and converts its tags to XML valid tags
+        Parses the HTML parsed texts and converts its tags to XML valid tags.
+
+        :returns: HTML enabled text in a XML valid format.
+        :rtype: str
         """
 
         if hasattr(self, 'content') and self.content != '':
@@ -99,7 +115,10 @@ class HTMLElement(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -110,3 +129,5 @@ class HTMLElement(Element):
 
         self.xml_element.tail = ''
         self.xml_element.text = self.convert_html_to_xml()
+
+        return self.xml_element

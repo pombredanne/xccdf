@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.rule includes the class Rule
+to create or import a <xccdf:Rule> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -19,16 +28,19 @@ from xccdf.exceptions import CardinalityException
 class Rule(Element):
 
     """
-    Class to parse <xccdf:Rule> element
+    Class to parse <xccdf:Rule> element.
     """
 
     def __init__(self, xml_element=None, id=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
         :param str id: Unique ID of the Rule.
-                       If xml_element is present, this parameter is ignored
+                       If xml_element is present, this parameter is ignored.
+        :raises ValueError: If no parameter is given.
+        :raises RequiredAttributeException: If after importing the xml_element
+                                            the id attribute is missing.
         """
 
         if xml_element is None and id is None:
@@ -50,7 +62,10 @@ class Rule(Element):
 
     def __str__(self):
         """
-        String representation of Rule object
+        String representation of Rule object.
+
+        :returns: Rule object as a string.
+        :rtype: str
         """
 
         string_value = 'Rule {id}'.format(id=self.id)
@@ -58,8 +73,13 @@ class Rule(Element):
 
     def load_children(self):
         """
-        Load the subelements from the xml_element in its correspondent classes
+        Load the subelements from the xml_element in its correspondent classes.
+
+        :returns: List of child objects.
+        :rtype: list
+        :raises CardinalityException: If there is more than one Version child.
         """
+
         # Containers
         children = list()
         statuses = list()
@@ -102,9 +122,9 @@ class Rule(Element):
 
     def as_dict(self):
         """
-        Serializes the object necessary data in a dictionary
+        Serializes the object necessary data in a dictionary.
 
-        :returns: Serialized data in a dictionary
+        :returns: Serialized data in a dictionary.
         :rtype: dict
         """
 
@@ -148,7 +168,10 @@ class Rule(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML Element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -175,3 +198,5 @@ class Rule(Element):
                 child.update_xml_element()
                 if hasattr(child, 'xml_element'):
                     self.xml_element.append(child.xml_element)
+
+        return self.xml_element
