@@ -11,3 +11,4 @@ Element models
    models/notice.rst
    models/platform.rst
    models/profile.rst
+   models/rear_matter.rst
