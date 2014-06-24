@@ -17,3 +17,4 @@ Element models
    models/status.rst
    models/tailoring.rst
    models/title.rst
+   models/version.rst
