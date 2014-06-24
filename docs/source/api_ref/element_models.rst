@@ -14,3 +14,4 @@ Element models
    models/rear_matter.rst
    models/rule.rst
    models/select.rst
+   models/status.rst
