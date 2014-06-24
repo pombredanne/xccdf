@@ -10,3 +10,4 @@ Contents:
    models/description.rst
    models/element.rst
    models/front_matter.rst
+   models/group.rst
