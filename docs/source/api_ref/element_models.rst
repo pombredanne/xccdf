@@ -10,3 +10,4 @@ Element models
    models/ident.rst
    models/notice.rst
    models/platform.rst
+   models/profile.rst
