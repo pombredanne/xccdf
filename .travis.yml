@@ -11,6 +11,6 @@ script:
     - flake8 src/xccdf
 after_success:
     - coverage report -m
-    - radon cc -s -a src/xccdf
-    - radon mi -s src/xccdf
+    - radon cc -s -a -e *test*,test*,*test src/xccdf
+    - radon mi -s -e *test*,test*,*test src/xccdf
     - coveralls
