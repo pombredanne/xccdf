@@ -9,3 +9,4 @@ Contents:
    models/benchmark.rst
    models/description.rst
    models/element.rst
+   models/front_matter.rst
