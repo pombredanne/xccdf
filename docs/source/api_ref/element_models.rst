@@ -15,3 +15,4 @@ Element models
    models/rule.rst
    models/select.rst
    models/status.rst
+   models/tailoring.rst
