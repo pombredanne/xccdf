@@ -13,3 +13,4 @@ Element models
    models/profile.rst
    models/rear_matter.rst
    models/rule.rst
+   models/select.rst
