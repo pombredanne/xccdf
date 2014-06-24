@@ -8,3 +8,4 @@ Element models
    models/front_matter.rst
    models/group.rst
    models/ident.rst
+   models/notice.rst
