@@ -8,3 +8,4 @@ Contents:
 
    models/benchmark.rst
    models/description.rst
+   models/element.rst
