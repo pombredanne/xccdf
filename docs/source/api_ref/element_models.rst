@@ -7,3 +7,4 @@ Element models
    models/description.rst
    models/front_matter.rst
    models/group.rst
+   models/ident.rst
