@@ -9,3 +9,4 @@ Element models
    models/group.rst
    models/ident.rst
    models/notice.rst
+   models/platform.rst
