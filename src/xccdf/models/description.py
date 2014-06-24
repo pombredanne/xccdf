@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.description includes the class Description
+to create or import a <xccdf:description> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -10,14 +19,14 @@ from xccdf.models.html_element import HTMLElement
 class Description(HTMLElement):
 
     """
-    Class to implement <xccdf:description> element
+    Class to implement <xccdf:description> element.
     """
 
     def __init__(self, xml_element=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
         """
 
         tag_name = 'description' if xml_element is None else None
@@ -26,7 +35,10 @@ class Description(HTMLElement):
 
     def __str__(self):
         """
-        String representation of Description object
+        String representation of Description object.
+
+        :returns: Description object as a string.
+        :rtype: str
         """
 
         string_value = 'description'
@@ -38,7 +50,10 @@ class Description(HTMLElement):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         super(Description, self).update_xml_element()
@@ -49,7 +64,16 @@ class Description(HTMLElement):
         if hasattr(self, 'override'):
             self.xml_element.set('override', str(self.override))
 
+        return self.xml_element
+
     def to_xml_string(self):
+        """
+        Updates the XML element and returns it as a string.
+
+        :returns: XML block as a string.
+        :rtype: str
+        """
+
         self.update_xml_element()
         xml = self.xml_element
 

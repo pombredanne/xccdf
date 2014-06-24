@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.status includes the class Status
+to create or import a <xccdf:status> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # Python stdlib
 from datetime import date
 
@@ -16,14 +25,18 @@ from xccdf.constants import NSMAP
 class Status(Element):
 
     """
-    Class to implement <xccdf:status> element
+    Class to implement <xccdf:status> element.
     """
 
     def __init__(self, xml_element=None, state=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load_xml_attrs
+        :param lxml.etree._Element xml_element: XML element to load_xml_attrs.
+        :param str state: State string of this status
+        :raises ValueError: If no parameter is given.
+        :raises InvalidValueException: If the imported state string is not
+                                       one of the valid state strings.
         """
 
         if xml_element is None and state is None:
@@ -42,7 +55,10 @@ class Status(Element):
 
     def __str__(self):
         """
-        String representation of Status object
+        String representation of Status object.
+
+        :returns: Status object as a string.
+        :rtype: str
         """
 
         string_value = 'status {state}'.format(state=self.text)
@@ -52,9 +68,9 @@ class Status(Element):
 
     def str_to_date(self):
         """
-        Returns the date attribute as a date object
+        Returns the date attribute as a date object.
 
-        :returns: Date of the status if it exists
+        :returns: Date of the status if it exists.
         :rtype: date or NoneType
         """
 
@@ -65,7 +81,10 @@ class Status(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -75,7 +94,16 @@ class Status(Element):
             self.xml_element.set('date', self.date)
         self.xml_element.text = self.text
 
+        return self.xml_element
+
     def to_xml_string(self):
+        """
+        Exports the element in XML format.
+
+        :returns: element in XML format.
+        :rtype: str
+        """
+
         self.update_xml_element()
         xml = self.xml_element
 

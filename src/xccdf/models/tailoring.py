@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.tailoring includes the class Tailoring
+to create or import a <xccdf:Tailoring> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # Python stdlib
 import re
 
@@ -20,16 +29,21 @@ from xccdf.constants import NSMAP
 class Tailoring(Element):
 
     """
-    Class to implement <xccdf:Tailoring> element
+    Class to implement <xccdf:Tailoring> element.
     """
 
     def __init__(self, xml_element=None, id=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
         :param str id: Unique ID of the Tailoring.
-                       If xml_element is present, this parameter is ignored
+                       If xml_element is present, this parameter is ignored.
+        :raises ValueError: If no parameter is given.
+        :raises RequiredAttributeException: If after importing the xml_element
+                                            the id attribute is missing.
+        :raises InvalidValueException: If the id attribute
+                                       has an invalid format.
         """
 
         if xml_element is None and id is None:
@@ -54,7 +68,10 @@ class Tailoring(Element):
 
     def __str__(self):
         """
-        String representation of Tailoring object
+        String representation of Tailoring object.
+
+        :returns: Tailoring object as a string
+        :rtype: str
         """
 
         string_value = 'Tailoring {id}'.format(id=self.id)
@@ -62,7 +79,13 @@ class Tailoring(Element):
 
     def load_children(self):
         """
-        Load the subelements from the xml_element in its correspondent classes
+        Load the subelements from the xml_element in its correspondent classes.
+
+        :returns: List of child objects.
+        :rtype: list
+        :raises CardinalityException: If there is more than one Version child.
+        :raises CardinalityException: If there is no Version child.
+        :raises CardinalityException: If there is no Profile element.
         """
         # Containers
         children = list()
@@ -102,7 +125,10 @@ class Tailoring(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -114,3 +140,5 @@ class Tailoring(Element):
         for child in self.children:
             child.update_xml_element()
             self.xml_element.append(child.xml_element)
+
+        return self.xml_element

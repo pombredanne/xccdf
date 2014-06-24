@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.title includes the class Title
+to create or import a <xccdf:title> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -11,14 +20,14 @@ from xccdf.constants import NSMAP
 class Title(Element):
 
     """
-    Class to implement <xccdf:title> element
+    Class to implement <xccdf:title> element.
     """
 
     def __init__(self, xml_element=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load_xml_attrs
+        :param lxml.etree._Element xml_element: XML element to load_xml_attrs.
         """
         tag_name = 'title' if xml_element is None else None
 
@@ -26,7 +35,10 @@ class Title(Element):
 
     def __str__(self):
         """
-        String representation of Title object
+        String representation of Title object.
+
+        :returns: Title object as a string
+        :rtype: str
         """
 
         string_value = 'title'
@@ -38,7 +50,10 @@ class Title(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -52,11 +67,13 @@ class Title(Element):
         if hasattr(self, 'text'):
             self.xml_element.text = self.text
 
+        return self.xml_element
+
     def to_xml_string(self):
         """
-        Exports the element in XML format
+        Exports the element in XML format.
 
-        :returns: element in XML format
+        :returns: element in XML format.
         :rtype: str
         """
 

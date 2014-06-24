@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+"""
+xccdf.models.notice includes the class Notice
+to create or import a <xccdf:notice> element.
+
+This module is part of the xccdf library.
+
+Author: Rodrigo Núñez <rnunezmujica@icloud.com>
+"""
+
 # lxml
 from lxml import etree
 
@@ -12,14 +21,18 @@ from xccdf.constants import NSMAP
 class Platform(Element):
 
     """
-    Class to implement <xccdf:platform> element
+    Class to implement <xccdf:platform> element.
     """
 
     def __init__(self, xml_element=None, idref=None):
         """
-        Initializes the attrs attribute to serialize the attributes
+        Initializes the attrs attribute to serialize the attributes.
 
-        :param lxml.etree._Element xml_element: XML element to load
+        :param lxml.etree._Element xml_element: XML element to load.
+        :param str idref: CPE string or identifier of CPEL expression.
+        :raises ValueError: If no parameter is given.
+        :raises RequiredAttributeException: If after importing the xml_element
+                                            the idref attribute is missing.
         """
         if xml_element is None and idref is None:
             raise ValueError('either xml_element or idref are required')
@@ -36,7 +49,10 @@ class Platform(Element):
 
     def __str__(self):
         """
-        String representation of Notice object
+        String representation of Platform object.
+
+        :returns: Platform object as a string.
+        :rtype: str
         """
 
         string_value = 'platform {idref}'.format(idref=self.idref)
@@ -44,7 +60,10 @@ class Platform(Element):
 
     def update_xml_element(self):
         """
-        Updates the xml element contents to matches the instance contents
+        Updates the xml element contents to matches the instance contents.
+
+        :returns: Updated XML element.
+        :rtype: lxml.etree._Element
         """
 
         if not hasattr(self, 'xml_element'):
@@ -53,7 +72,16 @@ class Platform(Element):
         if hasattr(self, 'idref'):
             self.xml_element.set('idref', self.idref)
 
+        return self.xml_element
+
     def to_xml_string(self):
+        """
+        Exports the element in XML format.
+
+        :returns: element in XML format.
+        :rtype: str
+        """
+
         self.update_xml_element()
         xml = self.xml_element
 
