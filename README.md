@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/Dalveen84/xccdf.svg?branch=master)](https://travis-ci.org/Dalveen84/xccdf)
 [![Coverage Status](https://coveralls.io/repos/Dalveen84/xccdf/badge.png?branch=master)](https://coveralls.io/r/Dalveen84/xccdf?branch=master)
+[![Downloads](https://pypip.in/download/xccdf/badge.png?period=month)](https://pypi.python.org/pypi/xccdf/)
+[![Latest Version](https://pypip.in/version/xccdf/badge.png)](https://pypi.python.org/pypi/xccdf/)
+[![Wheel Status](https://pypip.in/wheel/xccdf/badge.png)](https://pypi.python.org/pypi/xccdf/)
+[![License](https://pypip.in/license/xccdf/badge.png)](https://pypi.python.org/pypi/xccdf/)
 [![Stories in Ready](https://badge.waffle.io/dalveen84/xccdf.png?label=ready&title=Ready)](https://waffle.io/dalveen84/xccdf)
 
 Extensible Configuration Checklist Description Format (XCCDF) Python Library.  
